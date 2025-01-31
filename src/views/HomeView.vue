@@ -229,11 +229,11 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 400px; /* Frame 高度 */
-  padding: 60px 20px;
+  padding: 80px 20px 20px;
   box-sizing: border-box;
   min-height: 400px; /* 最小高度 */
   height: auto; /* 自适应内容高度 */
+  margin-bottom: 0px; /* 添加底部间距 */
   
 
   @media (max-width: 768px) {
@@ -286,7 +286,8 @@ export default {
     flex-direction: column;
     gap: 8px; /* 每行间距 */
 
-    p{font-family: 'Open Sans', sans-serif;
+    p{
+    font-family: 'Open Sans', sans-serif;
     font-weight: 600; /* SemiBold */
     font-size: 16px;
     line-height: 1;
@@ -601,6 +602,7 @@ export default {
 .selected-works {
   .selected-works-header {
     @extend .section-header;
+    padding-top: 60px
   }
 
   .work-grid {
