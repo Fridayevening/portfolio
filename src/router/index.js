@@ -104,7 +104,7 @@ const routes = [
 // export default router
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/portfolio/'),
   routes,
   scrollBehavior(to) {
     if (to.hash) {
