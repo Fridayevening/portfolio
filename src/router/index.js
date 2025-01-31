@@ -106,13 +106,11 @@ const routes = [
 const router = createRouter({
   history: createWebHistory('/portfolio/'),
   routes,
-  scrollBehavior(to) {
-    if (to.hash) {
-      return {
-        el: to.hash,
-        behavior: "smooth",
-        block: "center",
-      };
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;  // 如果有保存的位置，恢复到之前的滚动位置
+    } else {
+      return { top: 0 };  // 否则，滚动到顶部
     }
   },
 });
