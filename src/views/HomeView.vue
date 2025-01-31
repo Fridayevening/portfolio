@@ -87,7 +87,7 @@
         <p class="section-desc">Doing a HCI Master's at UCD taught me how to truly design with a user-centered approach.</p>
       </div>
       <div class="essay-content">
-        <a href="/pdfs/essay1.pdf" target="_blank" class="essay-frame">
+        <a href="/portfolio/pdfs/essay1.pdf" target="_blank" class="essay-frame">
           <div class="image-container">
             <img src="@/assets/images/essay1.png" alt="Essay 1" />
           </div>
@@ -96,7 +96,7 @@
           </div>
         </a>
         
-        <a href="/pdfs/essay2.pdf" target="_blank" class="essay-frame">
+        <a href="/portfolio/pdfs/essay2.pdf" target="_blank" class="essay-frame">
           <div class="image-container">
             <img src="@/assets/images/essay2.png" alt="Essay 2" />
           </div>
