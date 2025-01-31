@@ -626,7 +626,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
+    text-align: left;
     gap: 10px;
   }
 
