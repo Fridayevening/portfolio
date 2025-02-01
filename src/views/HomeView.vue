@@ -218,18 +218,49 @@ export default {
   }
 
   section {
-    margin-bottom: 80px;
+    margin-bottom: 20px;
   }
 
 
 // Hero section - 背景全宽，内容有限制
 .hero {
+
+  section {
+    margin-bottom: 80px;
+    
+    @media (max-width: 768px) {
+      margin-bottom: 40px;
+    }
+  }
+
+  // 统一的内容容器样式
+  .content-container {
+   max-width: 1280px;
+   margin: 0 auto;
+   padding: 0 20px;
+  
+   @media (max-width: 768px) {
+     padding: 0 10px;
+    }
+  }
+
+  .work-grid,
+  .essay-content,
+  .interest-list {
+    @extend .content-container;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+  }
+
   background-color: #AA99AA; /* 背景颜色 */
   color: 000000;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 80px 20px 20px;
+  padding: 120px 20px 20px;
   box-sizing: border-box;
   min-height: 400px; /* 最小高度 */
   height: auto; /* 自适应内容高度 */
@@ -237,7 +268,7 @@ export default {
   
 
   @media (max-width: 768px) {
-    padding: 20px; /* 小屏减少内边距 */
+    padding: 100px 20px 20px; /* 小屏减少内边距 */
   }
 
   .hero-content {
@@ -349,29 +380,176 @@ export default {
 
 //Essay
 
+// .essay-projects {
+//   .essay-header {
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;  // 保证居中对齐
+//     justify-content: center;
+//     text-align: center;
+//     gap: 10px;
+//     margin-top: 60px;  // 增加顶部间距，确保与Selected Works一致
+
+//     h2 {
+//       font-family: 'Open Sans', sans-serif;
+//       font-size: 24px;
+//       font-weight: 700;  // 与Selected Works一致
+//       margin: 0;
+//       padding: 0;
+//     }
+
+//     .section-desc {
+//       font-family: 'Open Sans', sans-serif;
+//       font-size: 16px;
+//       font-weight: 400;  // 与Selected Works一致
+//       margin: 0;
+//       padding: 0;
+//       color: #000000;  // 与Selected Works一致
+//     }
+//   }
+
+//   .essay-content {
+//     padding: 0 20px; // 确保与其他部分一致
+//     display: flex;
+//     flex-direction: column;
+//     gap: 20px;
+//     align-items: center;
+//   }
+
+//   .essay-frame {
+//     display: flex;
+//     gap: 100px;
+//     align-items: center;
+//     background-color: #FFF7F2;
+//     border-radius: 15px;
+//     padding: 20px;
+//     width: 100%;
+//     max-width: 800px;
+//     box-shadow: none;
+//     border: none;
+//     text-decoration: none; /* 移除下划线 */
+//     color: inherit; /* 保持原有文字颜色 */
+//     transition: all 0.3s ease; /* 添加过渡效果 */
+//     cursor: pointer; /* 显示指针样式 */
+
+//     &:hover {
+//       transform: translateY(-2px); /* 悬浮时略微上移 */
+//       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+//       background-color: #F9F0ED; /* 轻微改变背景色 */
+//     }
+
+//     @media (max-width: 768px) {
+//       flex-direction: column;
+//       align-items: flex-start;
+//     }
+//   }
+
+//   .image-container {
+//     flex-shrink: 0;
+//     width: 300px;
+//     height: 162px;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+
+//     img {
+//       width: 100%;
+//       height: auto;
+//       object-fit: cover;
+//     }
+//   }
+
+//   .text-content {
+//     width: 420px;
+//     display: flex;
+//     flex-direction: column;
+//     gap: 3px;
+
+//     h3 {
+//       font-family: 'Inter', sans-serif;
+//       font-weight: 600;
+//       font-size: 16px;
+//       line-height: 24px;
+//       color: #000000;
+//       margin: 0;
+//     }
+
+//     p {
+//       font-size: 14px;
+//       font-weight: 400;
+//       margin: 0;
+//       color: #666;
+//     }
+//   }
+// }
+
 .essay-projects {
+  margin-bottom: 20px;  // 添加底部间距，与上一个部分保持一致
   .essay-header {
     @extend .section-header;
-    margin-bottom: 20px
+    padding-top: 20px;
+    margin-bottom: 20px;
+    margin: 0 auto;
+    
+    @media (max-width: 768px) {
+      text-align: left;
+      align-items: flex-start;
+      padding: 20px 20px 0 20px;
+    }
+
+    h2 {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0;
+      padding: 0;
+    }
+
+    .section-desc {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      margin: 0;
+      padding: 0;
+      color: #000000;
+    }
   }
 
   .essay-content {
-    padding: 0 20px; // 确保与其他部分一致
+    padding: 0 20px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 0px;
     align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+
+    h3 {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: #383233;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+      align-items: flex-start;  // 小屏幕时左对齐
+      width: 100%;  // 让内容宽度自适应
+      box-sizing: border-box;
+    }
   }
 
   .essay-frame {
     display: flex;
-    gap: 100px;
-    align-items: center;
+    gap: 40px;
+    align-items:  flex-start;  // 改为顶部对齐
     background-color: #FFF7F2;
     border-radius: 15px;
-    padding: 20px;
+    padding: 30px;
     width: 100%;
-    max-width: 800px;
+    box-sizing: border-box;
+    border: 1px solid #000000;  // 添加边框以保持视觉一致性
     box-shadow: none;
     border: none;
     text-decoration: none; /* 移除下划线 */
@@ -384,51 +562,21 @@ export default {
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影 */
       background-color: #F9F0ED; /* 轻微改变背景色 */
     }
+    
 
     @media (max-width: 768px) {
+      // flex-direction: column;
+      // align-items: flex-start;
+      // width: calc(100% - 20px);
+      // gap: 20px;
+      // margin: 0 10px;
       flex-direction: column;
-      align-items: flex-start;
-    }
-  }
-
-  .image-container {
-    flex-shrink: 0;
-    width: 300px;
-    height: 162px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    img {
       width: 100%;
-      height: auto;
-      object-fit: cover;
-    }
-  }
-
-  .text-content {
-    width: 420px;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-
-    h3 {
-      font-family: 'Inter', sans-serif;
-      font-weight: 600;
-      font-size: 16px;
-      line-height: 24px;
-      color: #000000;
-      margin: 0;
-    }
-
-    p {
-      font-size: 14px;
-      font-weight: 400;
-      margin: 0;
-      color: #666;
+      padding: 20px;
     }
   }
 }
+
 
 //Time
   .time-spent {
@@ -436,17 +584,58 @@ export default {
 
   .time-header {
     @extend .section-header;
-    margin-bottom: 40px; // 与 interest-list 保持 20px 的间距
+    padding-top: 20px;
+    margin-bottom: 0px;
+    margin: 0 auto;
+    
+    @media (max-width: 768px) {
+      text-align: left;
+      align-items: flex-start;
+      padding: 20px 20px 0 20px; 
+    }
+
+    h2 {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0;
+      padding: 0;
+    }
+
+    .section-desc {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      margin: 0;
+      padding: 0;
+      color: #000000;
+    }
   }
 
   .interest-list {
     max-width: 1280px;
     margin: 0 auto;
+    margin-top: 20px;  // 增加顶部外边距
     padding: 0 20px;
     display: grid;
     grid-template-columns: repeat(4, 280px); /* 增加宽度从 240px 到 280px */
     justify-content: center;
     gap: 20px;
+
+    @media (max-width: 1200px) {
+      grid-template-columns: repeat(2, 280px);  // 中等屏幕时变成两行
+      gap: 30px;
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      padding: 0 20px;
+      gap: 20px;  // 增加卡片之间的间距
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 20px;  // 添加与 header 的间距
+      margin-bottom: 40px;
+    }
   }
 }
 
@@ -459,6 +648,17 @@ export default {
   text-align: left;
   cursor: pointer;
   min-width: 0; /* 添加这行确保文字可以正常换行 */
+
+  @media (max-width: 1200px) {
+    width: 280px;  // 确保中等屏幕时宽度固定
+    margin: 0 auto;  // 居中显示
+  }
+
+  @media (max-width: 768px) {
+    padding: 0;
+    width: 100%;
+    margin-bottom: 20px;  // 添加每个项目的底部间距
+  }
 
   h3 {
     font-family: 'Open Sans', sans-serif;
@@ -498,6 +698,18 @@ export default {
 
     li {
       margin-bottom: 5px;
+    }
+    @media (max-width: 768px) {
+      padding: 0;  // 移除内边距
+      width: 100%;  // 确保全宽
+      
+      h3 {
+        font-size: 18px;  // 稍微调整标题大小
+      }
+
+      ul {
+        width: 100%;  // 确保列表全宽
+      }
     }
   }
 }
@@ -581,28 +793,35 @@ export default {
 }
 
   // // 标题和描述文字容器
-  h2, .section-desc {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 300px;
-  }
+  // h2, .section-desc {
+  //   max-width: 1200px;
+  //   margin: 0 auto;
+  //   padding: 0 300px;
+  // }
 
-  h2 {
-    font-size: 1.8em;
-    margin-bottom: 10px;
-  }
+  // h2 {
+  //   font-size: 1.8em;
+  //   margin-bottom: 10px;
+  // }
 
-  .section-desc {
-    color: #666;
-    margin-bottom: 30px;
-  }
+  // .section-desc {
+  //   color: #666;
+  //   margin-bottom: 30px;
+  // }
 
 
 // Selected Works 样式
 .selected-works {
   .selected-works-header {
     @extend .section-header;
-    padding-top: 60px
+    padding-top: 60px;
+    margin-bottom: 20px;  
+
+    @media (max-width: 768px) {
+      text-align: left;
+      align-items: flex-start;
+      padding: 60px 20px 0 20px;  // 修改这里，统一使用 20px 的左右内边距
+    }
   }
 
   .work-grid {
@@ -615,6 +834,10 @@ export default {
 
     @media (max-width: 768px) {
       grid-template-columns: 1fr; // 小屏幕单列布局
+      margin: 0;  // 移除自动居中
+      padding: 0 20px;  // 添加统一的左右内边距
+      width: 100%;  // 确保全宽
+      box-sizing: border-box;  // 确保内边距不会导致溢出
     }
   }
 
@@ -623,16 +846,80 @@ export default {
     border: 1px solid #000000;
     border-radius: 15px;
     padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: left;
-    gap: 10px;
+    width: 400px;
+    height: 200px;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: inherit;
+
+    .content-wrapper {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      
+      .title-group {
+        .header-wrapper {
+          display: flex;
+          gap: 10px;
+          align-items: flex-start;
+
+          .work-icon {
+            width: 50px;
+            height: 50px;
+            flex-shrink: 0;
+          }
+
+          h3 {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: #000000;
+            margin: 0;
+            position: relative;
+            line-height: 1.2;
+            padding-bottom: 25px;
+
+            &::after {
+              content: '';
+              position: absolute;
+              left: 0;
+              bottom: 0;
+              width: 65px;
+              height: 8px;
+              background-color: #AA99AA;
+              border: 1px solid #000000;
+              border-radius: 10px;
+              transition: all 0.3s ease;
+            }
+          }
+        }
+      }
+
+      p {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        color: #383233;
+        margin: 0;
+        line-height: 1.5;
+      }
+    }
+
+    &:hover {
+      .title-group .header-wrapper h3::after {
+        width: 105px;
+        background-color: #40C575;
+      }
+    }
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
   }
 
   h2, .section-desc {
     padding: 0;
-    margin-bottom: 40px;
   }
 }
 
@@ -711,33 +998,33 @@ export default {
   }
 
   // 为了保持内容不会太靠近屏幕边缘，可以给具体的内容添加内边距
-  .hero-content,
-  .work-grid,
-  .essay-grid,
-  .interest-list,
-  .cta-content,
-  .section-desc {
-    max-width: 100%;
-    margin: 0;
-    padding: 40px 200px;
-  }
+  // .hero-content,
+  // .work-grid,
+  // .essay-grid,
+  // .interest-list,
+  // .cta-content,
+  // .section-desc {
+  //   max-width: 100%;
+  //   margin: 0;
+  //   padding: 40px 200px;
+  // }
 
   // 标题和描述文字的容器
   h2, .section-desc {
-    padding: 0 200px;
+    padding: 0;
   }
 
   // Selected Works 标题部分样式
   .selected-works-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 0 20px;
-    max-width: 1280px;
-    width: 90%;
-    gap: 10px;
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    // justify-content: center;
+    // text-align: center;
+    // padding: 0 20px;
+    // max-width: 1280px;
+    // width: 90%;
+    // gap: 10px;
     
    @media (max-width: 768px) {
     text-align: left; /* 小屏幕文字靠左对齐 */
@@ -775,8 +1062,8 @@ export default {
 }
 
 .work-item {
-  width: 400px;
-  height: 200px;
+  // width: 400px;
+  // height: 200px;
   padding: 20px;
   box-sizing: border-box;
   background-color: #F9F0ED;
@@ -795,7 +1082,8 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 10px;  // Frame1 和正文之间的间距
-    justify-content: center;
+    justify-content: flex-start;  // 改为顶部对齐
+    padding: 10px 0;  // 添加上下内边距
 
     .title-group {
       .header-wrapper {
@@ -807,6 +1095,7 @@ export default {
           width: 50px;
           height: 50px;
           flex-shrink: 0;
+          margin-top: 5px;  // 微调图标位置
 
           img {
             width: 100%;
@@ -823,6 +1112,7 @@ export default {
           margin: 0;
           position: relative;
           line-height: 1.2;
+          margin-bottom: 25px;  // 确保下方进度条有足够空间
 
           &::after {
             content: '';
@@ -847,6 +1137,7 @@ export default {
       color: #383233;
       margin: 0;
       line-height: 1.5;
+      margin-top: 5px;  // 添加与上方内容的间距
     }
   }
 
@@ -865,21 +1156,45 @@ export default {
 
 .footer-content {
   display: flex;
-  align-items: center;
-  max-width: 100%;
+  align-items: flex-start;
+  max-width: 1280px;
   margin: 0 auto;
   background-color: #AA99AA;
   padding: 40px 20px;
-  justify-content: center;
-  margin-left: -50px;
+  justify-content: flex-start;
+  gap: 120px;  // 添加左右内容之间的间距
+
+  @media (max-width: 1200px) {
+    gap: 80px;
+    padding: 40px 40px;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 40px;
+    padding: 40px 20px;
+    margin-left: 0;
+  }
 }
 
-.footer-left h2 {
-  font-family: 'Open Sans', sans-serif;
-  font-size: 64px;
-  font-weight: 800;
-  margin: 0;
-  color: #222;
+.footer-left {
+  padding-left: 200px;  // 添加左内边距，与 interest-list 对齐
+
+  @media (max-width: 1200px) {
+    padding-left: 100px;
+  }
+
+  @media (max-width: 768px) {
+    padding-left: 20px;
+  }
+
+  h2 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 64px;
+    font-weight: 800;
+    margin: 0;
+    color: #222;
+  }
 }
 
 .footer-right {
@@ -888,6 +1203,16 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 20px; /* 文字和按钮之间的间距 */
+
+  @media (max-width: 1200px) {
+    max-width: 500px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+    max-width: 100%;
+  }
+
 }
 
 .footer-right p {

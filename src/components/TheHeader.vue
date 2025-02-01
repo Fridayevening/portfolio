@@ -1,132 +1,226 @@
 <template>
   <header class="header">
-    <div class="logo" @click="goToHome">
-      <img src="@/assets/images/logo.png" alt="Logo" class="logo-image" />
-      <div class="logo-text">
-        <p>Yanfei</p>
-        <p>Wang</p>
+    <div class="header-content">
+      <div class="logo-container">
+        <img src="@/assets/logo.png" alt="Logo" class="nav-logo" />
+        <router-link to="/" class="logo">Yanfei Wang</router-link>
       </div>
+      
+      <button class="menu-toggle" @click="toggleMenu" :class="{ 'active': isMenuOpen }">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="nav-links" :class="{ 'active': isMenuOpen }">
+        <a 
+          :class="{ 'active-work': isWorkRoute }" 
+          class="work-link"
+          @click.prevent
+        >Work</a>
+        <a href="#" @click.prevent="goToSection('research')">Research</a>
+        <a href="#" @click.prevent="goToSection('interest')">Interest</a>
+      </nav>
     </div>
-    <nav class="nav">
-      <a @click.prevent="goToSection('selected-works')" :class="{ active: isWorkActive }">Work</a>
-      <a @click.prevent="goToSection('research')">Research</a>
-      <a @click.prevent="goToSection('interest')">Interest</a>
-    </nav>
   </header>
 </template>
 
+<style scoped>
+.nav-links {
+  display: flex;
+  gap: 40px;
+
+  a {
+    text-decoration: none;
+    color: #000;
+    font-weight: 500;
+    font-family: 'Open Sans', sans-serif;
+    transition: color 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      color: #40C575;
+    }
+
+    &.active-work {
+      color: #40C575;
+      font-weight: 600;
+      cursor: default;
+      pointer-events: none;
+    }
+  }
+}
+</style>
+
 <script>
 export default {
-  name: "TheHeader",
+  name: 'TheHeader',
   computed: {
-    // 检测是否当前路由是 Work 相关页面
-    isWorkActive() {
-      return this.$route.path.startsWith("/work");
-    },
-    // 检测当前是否在 HomeView
-    isHomePage() {
-      return this.$route.path === "/";
-    },
+    isWorkRoute() {
+      return this.$route.path.includes('/work/');
+    }
+  },
+  data() {
+    return {
+      isMenuOpen: false
+    }
   },
   methods: {
-    // **返回 HomeView 并回到顶部**
-    goToHome() {
-      if (this.isHomePage) {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } else {
-        this.$router.push("/").then(() => {
-          this.$nextTick(() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          });
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen;
+    },
+    goToSection(section) {
+      // 如果不在首页，先返回首页
+      if (this.$route.path !== '/') {
+        this.$router.push('/').then(() => {
+          setTimeout(() => {
+            const element = document.getElementById(section);
+            if (element) {
+              element.scrollIntoView({ behavior: 'smooth' });
+            }
+          }, 100);
         });
-      }
-    },
-
-    // **点击导航栏 Work / Research / Interest**
-    goToSection(sectionId) {
-      if (this.isHomePage) {
-        this.scrollToSection(sectionId);
       } else {
-        this.$router.push("/").then(() => {
-          this.waitForSection(sectionId);
-        });
+        // 如果在首页，直接滚动
+        const element = document.getElementById(section);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
       }
-    },
-
-    // **等待 HomeView 渲染完成后再滚动**
-    waitForSection(sectionId) {
-      this.$nextTick(() => {
-        setTimeout(() => {
-          this.scrollToSection(sectionId);
-        }, 300); // 确保 DOM 加载完成
-      });
-    },
-
-    // **滚动到指定 section**
-    scrollToSection(sectionId) {
-      const section = document.getElementById(sectionId);
-      if (section) {
-        section.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style scoped>
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
 .header {
-  position: fixed; /* 固定在页面顶部 */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000; /* 确保 header 处于最上层 */
+  background-color: #FFF7F2;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 200px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 100px; /* 适当调整 padding */
-  background-color: rgba(255, 247, 242, 0.9); /* 半透明背景 */
-  backdrop-filter: blur(10px); /* 添加模糊效果 */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 添加阴影提升层次感 */
-}
 
-body {
-  padding-top: 80px; /* 确保内容不会被 header 遮挡 */
+  @media (max-width: 1200px) {
+    padding: 20px 100px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
 }
 
 .logo {
-  display: flex;
-  align-items: center;
-  cursor: pointer; /* 让 Logo 也可以点击 */
-}
-
-.logo-image {
-  width: 40px; /* 适当调整 logo 尺寸 */
-  height: auto;
-  margin-right: 10px;
-}
-
-.logo-text {
-  font-family: 'Open Sans', sans-serif;
-  font-size: 14px;
-  line-height: 1.2;
-}
-
-.nav a {
-  margin-left: 40px;
+  font-size: 20px;
+  font-weight: 600;
   text-decoration: none;
-  color: #333;
+  color: #000;
   font-family: 'Open Sans', sans-serif;
-  transition: color 0.3s ease-in-out;
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+
+  a {
+    text-decoration: none;
+    color: #000;
+    font-weight: 500;
+    font-family: 'Open Sans', sans-serif;
+    transition: color 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      color: #40C575;
+    }
+  }
+
+  /* 添加 Work 链接的激活状态 */
+  .router-link-active {
+    color: #40C575 !important;
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #FFF7F2;
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+    &.active {
+      display: flex;
+    }
+
+    a {
+      padding: 10px 20px;
+    }
+  }
+}
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 20px;
+  background: none;
+  border: none;
   cursor: pointer;
-}
+  padding: 0;
 
-.nav a:hover {
-  color: #40C575;
-}
+  span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #000;
+    transition: all 0.3s;
+  }
 
-/* Work 页面高亮 */
-.nav .active {
-  color: #40C575 !important;
-  font-weight: bold;
+  &.active {
+    span:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
+    }
+
+    span:nth-child(2) {
+      opacity: 0;
+    }
+
+    span:nth-child(3) {
+      transform: translateY(-9px) rotate(-45deg);
+    }
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
 }
 </style>

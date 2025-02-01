@@ -176,36 +176,89 @@ export default {
 <style scoped>
 .work-view,.Problem, .Solution, .Business, .Product, .Final, .Outcomes {
   background-color: #FFF7F2; 
+  width: 100%;
+  margin: 0;
 }
 .work-view {
-  max-width: auto;
-  margin: 60px 0  auto;
-  padding: 30px 200px 0 200px;
+  max-width: 100%;
+  margin: 0;
+  padding: 120px 0 40px;
   font-family: 'Open Sans', sans-serif;
-  text-align: center;
   background-color: #FFF7F2; 
-}
 
-h1 {
-  font-size: 36px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  
-}
+  h1{
+    max-width: 1280px;
+    margin: 0 auto 20px;
+    padding: 0 200px;
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
 
-.intro {
-  font-size: 18px;
-}
+    @media (max-width: 1200px) {
+      padding: 0 100px;
+      font-size: 32px;
+      text-align: left;
+    }
 
+    @media (max-width: 768px) {
+      padding: 0 20px;
+      font-size: 28px;
+      text-align: left;
+    }
+  }
+
+  .intro {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 200px;
+    font-size: 18px;
+    text-align: center;
+
+    @media (max-width: 1200px) {
+      padding: 0 100px;
+      text-align: left;
+    }
+
+    @media (max-width: 768px) {
+      padding: 0 20px;
+      font-size: 16px;
+      text-align: left;
+    }
+  }
+  @media (max-width: 1200px) {
+    padding: 100px 0 30px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 80px 0 20px;
+  }
+}
 .Problem, .Solution, .Business, .Product, .Final, .Outcomes {
-  max-width: auto;
+  width: 100%;
+  margin: 0 auto;
   padding: 0 200px;
   text-align: left;
   font-family: 'Open Sans', sans-serif;
+
+  @media (max-width: 1200px) {
+    padding: 0 100px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+  }
 }
 
 .Outcomes {
   padding: 0px 200px 50px 200px;
+
+  @media (max-width: 1200px) {
+    padding: 0px 100px 40px 100px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0px 20px 30px 20px;
+  }
 }
 
 h2 {
@@ -231,6 +284,13 @@ h2 {
   border: 1px solid #ccc;
 
   font-family: 'Open Sans', sans-serif;
+
+  @media (max-width: 1200px) {
+    flex: 1 1 calc(50% - 20px);
+  }
+  @media (max-width: 768px) {
+    flex: 1 1 100%;
+  }
 }
 
 p {
