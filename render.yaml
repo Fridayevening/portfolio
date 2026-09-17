@@ -3,6 +3,7 @@ services:
     name: newboy-api
     runtime: docker
     plan: free
+    region: frankfurt
     rootDir: server
     dockerfilePath: ./Dockerfile
     healthCheckPath: /v1/health
