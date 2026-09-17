@@ -1,0 +1,6 @@
+# Delivery archives — not part of the source tree
+frontend.zip
+Archive.zip
+
+# macOS
+.DS_Store

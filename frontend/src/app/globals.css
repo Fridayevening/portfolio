@@ -1,0 +1,1182 @@
+@import "tailwindcss";
+
+:root {
+  --phosphor: #33ff66;
+  --desktop: #008080;
+  --chrome: #c0c0c0;
+  --navy: #000080;
+  --amber: #ffb000;
+}
+
+@theme inline {
+  --color-phosphor: var(--phosphor);
+  --color-desktop: var(--desktop);
+  --color-chrome: var(--chrome);
+  --color-navy: var(--navy);
+  --color-amber: var(--amber);
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: "VT323", "IBM Plex Mono", monospace;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  background: #000;
+  color: #0a0a0a;
+  font-family: var(--font-mono);
+}
+
+/* 像素风鼠标指针 */
+body,
+button,
+a,
+input,
+textarea {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22'><polygon points='0,0 0,15 4,11 7,18.5 10,17.3 7,10.5 11.5,10.5' fill='white' stroke='black' stroke-width='1'/></svg>")
+      0 0,
+    default;
+}
+
+::selection {
+  background: var(--navy);
+  color: #fff;
+}
+
+/* ── Win95 立体边框 ───────────────────────────── */
+.bevel-out {
+  box-shadow:
+    inset -1px -1px #0a0a0a,
+    inset 1px 1px #fff,
+    inset -2px -2px #808080,
+    inset 2px 2px #dfdfdf;
+}
+.bevel-in {
+  box-shadow:
+    inset -1px -1px #fff,
+    inset 1px 1px #0a0a0a,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #808080;
+}
+.bevel-thin-out {
+  box-shadow:
+    inset -1px -1px #808080,
+    inset 1px 1px #fff;
+}
+.bevel-thin-in {
+  box-shadow:
+    inset -1px -1px #fff,
+    inset 1px 1px #808080;
+}
+
+.titlebar-active {
+  background: linear-gradient(90deg, #000080, #1084d0);
+}
+.titlebar-inactive {
+  background: linear-gradient(90deg, #7b7b7b, #b5b5b5);
+}
+
+/* 自定义 class 无法用 Tailwind 变体前缀, 这里手动实现按压/悬停态 */
+.press:active {
+  box-shadow:
+    inset -1px -1px #fff,
+    inset 1px 1px #808080;
+}
+.hover-bevel:hover {
+  box-shadow:
+    inset -1px -1px #fff,
+    inset 1px 1px #808080;
+}
+.alert-x:hover {
+  background: #c02020;
+}
+
+/* 标题栏小按钮 */
+.winder {
+  width: 20px;
+  height: 18px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--chrome);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  color: #0a0a0a;
+}
+.winder:active {
+  box-shadow:
+    inset -1px -1px #fff,
+    inset 1px 1px #808080;
+}
+
+/* 系统监视器表头:斜面小单元格(Floor Monitor 同款,win95 listview 味) */
+.fm-th {
+  font-weight: 400;
+  padding: 1px 6px;
+  white-space: nowrap;
+  box-shadow:
+    inset -1px -1px #808080,
+    inset 1px 1px #fff;
+}
+
+/* ── 文稿(PAPER.EXE)────────────────────────────── */
+/* tab 控件:上左白高光、右暗边。非激活 tab 有底边暗线"坐"在内容框上;
+   激活态 .wtab-on 去底边并下探 1px 盖住内容区的 bevel 顶线,与白底
+   内容连成一体 — 95 tab 的"连体页"观感 */
+.wtab {
+  box-shadow:
+    inset 1px 1px #fff,
+    inset -1px 0 #808080,
+    inset 0 -1px #808080;
+}
+.wtab-on {
+  box-shadow:
+    inset 1px 1px #fff,
+    inset -1px 0 #808080;
+  margin-bottom: -1px;
+  z-index: 5;
+}
+
+/* 预览纸正文:衬线栈复用照片注脚(photo-cap)的语言,文章与照片同等待遇 */
+.paper-serif {
+  font-family: Georgia, "Times New Roman", "Songti SC", "SimSun", serif;
+}
+
+/* ── CRT 质感 ─────────────────────────────────── */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 900;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.22) 0px,
+    rgba(0, 0, 0, 0.22) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+}
+.vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 901;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(0, 0, 0, 0.28) 100%
+  );
+}
+@keyframes crt-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.96;
+  }
+}
+.crt-flicker {
+  animation: crt-flicker 4s ease-in-out infinite;
+}
+
+/* 玻璃模式: CRT 弧面 */
+.crt-glass .crt-screen {
+  border-radius: 36px;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 140px rgba(0, 0, 0, 0.55),
+    inset 0 0 24px rgba(0, 0, 0, 0.35);
+}
+.crt-glass {
+  padding: 14px;
+}
+
+/* 设置面板的迷你管子: 弧面按屏幕比例缩小(148px 宽 vs 全屏) */
+.crt-prev-glass {
+  border-radius: 14px;
+  box-shadow:
+    inset 0 0 30px rgba(0, 0, 0, 0.55),
+    inset 0 0 7px rgba(0, 0, 0, 0.35);
+}
+
+.text-glow {
+  text-shadow:
+    0 0 6px rgba(51, 255, 102, 0.55),
+    0 0 1px rgba(51, 255, 102, 0.9);
+}
+.amber-glow {
+  text-shadow: 0 0 10px rgba(255, 176, 0, 0.5);
+}
+
+/* ── 动效 ─────────────────────────────────────── */
+/* EQ 踩着原曲 128 BPM:两拍(0.9375s)一个"动次大次" */
+.eq-bar {
+  transform-origin: bottom;
+}
+/* 轻拍"动":小跳一下,重拍时刻跟着轻晃 */
+.eq-hit-lite {
+  animation: eq-lite calc(60s / 128 * 2) ease-in-out infinite;
+}
+/* 重拍"大":前半拍蓄力,第二拍砸到满格 */
+.eq-hit-heavy {
+  animation: eq-heavy calc(60s / 128 * 2) ease-in-out infinite;
+}
+@keyframes eq-lite {
+  0% {
+    transform: scaleY(0.15);
+  }
+  8% {
+    transform: scaleY(0.5);
+  }
+  26% {
+    transform: scaleY(0.18);
+  }
+  56% {
+    transform: scaleY(0.3);
+  }
+  74% {
+    transform: scaleY(0.15);
+  }
+  100% {
+    transform: scaleY(0.15);
+  }
+}
+@keyframes eq-heavy {
+  0% {
+    transform: scaleY(0.15);
+  }
+  10% {
+    transform: scaleY(0.3);
+  }
+  24% {
+    transform: scaleY(0.16);
+  }
+  50% {
+    transform: scaleY(0.2);
+  }
+  58% {
+    transform: scaleY(1);
+  }
+  90% {
+    transform: scaleY(0.15);
+  }
+  100% {
+    transform: scaleY(0.15);
+  }
+}
+
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.cursor-blink {
+  animation: blink 1.06s steps(1) infinite;
+}
+
+/* ── 瞬时提示(播放器的"停不下来") ─────────────── */
+.player-tip {
+  position: absolute;
+  z-index: 9999;
+  max-width: 260px;
+  padding: 3px 8px;
+  background: #ffffe1;
+  border: 1px solid #0a0a0a;
+  color: #0a0a0a;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+}
+/* 气泡尾巴 */
+.player-tip::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: #ffffe1;
+  transform: translateX(-50%) rotate(45deg);
+}
+.tip-above::after {
+  bottom: -4px;
+  border-right: 1px solid #0a0a0a;
+  border-bottom: 1px solid #0a0a0a;
+}
+.tip-below::after {
+  top: -4px;
+  border-left: 1px solid #0a0a0a;
+  border-top: 1px solid #0a0a0a;
+}
+/* 基础 transform 供 reduced-motion 静态兜底;动画覆盖它 */
+.tip-above {
+  transform: translate(-50%, -100%);
+  animation: tip-hop-above 1.4s cubic-bezier(0.25, 0.8, 0.35, 1) forwards;
+}
+.tip-below {
+  transform: translate(-50%, 0);
+  animation: tip-hop-below 1.4s cubic-bezier(0.25, 0.8, 0.35, 1) forwards;
+}
+/* 两跳一飘: 冒出→上蹿→回落→再弹→浮走,带着摇头说"不"的摆动 */
+@keyframes tip-hop-above {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -100%) translateY(10px) scale(0.5) rotate(-6deg);
+  }
+  12% {
+    opacity: 1;
+    transform: translate(-50%, -100%) translateY(-16px) scale(1.12) rotate(4deg);
+  }
+  26% {
+    transform: translate(-50%, -100%) translateY(-6px) scale(0.97) rotate(-3deg);
+  }
+  42% {
+    transform: translate(-50%, -100%) translateY(-14px) scale(1.06) rotate(2deg);
+  }
+  58% {
+    transform: translate(-50%, -100%) translateY(-8px) scale(0.99) rotate(-1deg);
+  }
+  72% {
+    transform: translate(-50%, -100%) translateY(-11px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -100%) translateY(-30px) scale(0.85);
+  }
+}
+@keyframes tip-hop-below {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) translateY(-10px) scale(0.5) rotate(6deg);
+  }
+  12% {
+    opacity: 1;
+    transform: translate(-50%, 0) translateY(16px) scale(1.12) rotate(-4deg);
+  }
+  26% {
+    transform: translate(-50%, 0) translateY(6px) scale(0.97) rotate(3deg);
+  }
+  42% {
+    transform: translate(-50%, 0) translateY(14px) scale(1.06) rotate(-2deg);
+  }
+  58% {
+    transform: translate(-50%, 0) translateY(8px) scale(0.99) rotate(1deg);
+  }
+  72% {
+    transform: translate(-50%, 0) translateY(11px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0) translateY(30px) scale(0.85);
+  }
+}
+
+/* ── 报纸换版:新版本像换页一样落定 ─────────────── */
+@keyframes ledger-turn {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) rotate(-0.4deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+.ledger-turn {
+  animation: ledger-turn 0.5s ease-out;
+}
+
+/* ── 报纸详情窗口的内页:轻微上下漂浮(整窗漂会破坏 OS 隐喻,
+   只让纸在窗格里漂)。prefers-reduced-motion 由文末全局规则统一关闭。 */
+@keyframes paper-bob {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-3px);
+  }
+}
+.paper-bob {
+  animation: paper-bob 4.4s ease-in-out infinite alternate;
+}
+
+/* ── 图片查看器注脚 ── */
+.photo-cap {
+  color: #ddd8c8;
+  font-family: Georgia, "Times New Roman", "Songti SC", "SimSun", serif;
+  font-style: italic;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+/* ── 柠檬水彩蛋:整页融化 ─────────────────────── */
+/* 整屏:下垂拉伸 + 有机扭曲(位移滤镜由 Melt.tsx 的 rAF 渐进推大)。
+   url(#melt-warp) 与函数滤镜混排,每个关键帧都带上同一 url 才能插值 */
+.crt-screen.mode-melt {
+  transform-origin: 50% 0;
+  animation:
+    crt-flicker 4s ease-in-out infinite,
+    melt-sag 9.6s cubic-bezier(0.5, 0.05, 0.85, 0.45) forwards;
+}
+@keyframes melt-sag {
+  0% {
+    transform: none;
+    filter: url(#melt-warp) saturate(1) brightness(1) hue-rotate(0deg) blur(0);
+  }
+  22% {
+    transform: translateY(2%) scaleY(1.05) skewX(1.2deg);
+    filter: url(#melt-warp) saturate(0.92) brightness(0.97) hue-rotate(10deg) blur(0.5px);
+  }
+  60% {
+    transform: translateY(9%) scaleY(1.17) skewX(2.6deg);
+    filter: url(#melt-warp) saturate(0.82) brightness(0.95) hue-rotate(18deg) blur(1.2px);
+  }
+  100% {
+    transform: translateY(19%) scaleY(1.32) skewX(4.5deg);
+    filter: url(#melt-warp) saturate(0.72) brightness(0.9) hue-rotate(26deg) blur(2.2px);
+  }
+}
+
+/* 桌面件:错开时间各自淌下来。图标/窗口/报纸/桌宠都按 nth-child 错峰 */
+.mode-melt .dicon,
+.mode-melt .win95,
+.mode-melt .ledger,
+.mode-melt .stickynote,
+.mode-melt .clip-root,
+.mode-melt .taskbar {
+  transform-origin: 50% 0;
+  animation: melt-drip 3.4s cubic-bezier(0.55, 0, 0.85, 0.55) forwards;
+}
+.mode-melt > :nth-child(2n) {
+  animation-delay: 0.35s;
+  --sk: -2.5deg;
+}
+.mode-melt > :nth-child(3n) {
+  animation-delay: 0.7s;
+  --sk: 3deg;
+}
+.mode-melt > :nth-child(5n) {
+  animation-delay: 1.05s;
+}
+.mode-melt > :nth-child(7n) {
+  animation-delay: 1.4s;
+  --sk: -4deg;
+}
+/* 任务栏最后才撑不住 */
+.mode-melt .taskbar {
+  animation-delay: 2.2s;
+}
+@keyframes melt-drip {
+  0% {
+    transform: none;
+    filter: none;
+  }
+  35% {
+    transform: translateY(24px) scaleY(1.1) skewX(var(--sk, 2deg));
+    filter: blur(0.5px);
+  }
+  100% {
+    transform: translateY(44vh) scaleY(1.5) skewX(calc(var(--sk, 2deg) * 1.8))
+      rotate(calc(var(--sk, 2deg) * 0.6));
+    filter: blur(2px) saturate(0.85);
+    opacity: 0.88;
+  }
+}
+
+/* HUD */
+.melt-hud {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 965;
+  padding: 1px 10px 2px;
+  font-family: var(--font-display);
+  font-size: 17px;
+  letter-spacing: 0.06em;
+  color: #ffe36e;
+  background: rgba(10, 10, 10, 0.82);
+  border: 1px solid rgba(255, 227, 110, 0.4);
+  text-shadow: 0 0 8px rgba(255, 227, 110, 0.5);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.melt-hud-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 7px;
+  background: #ffe36e;
+  animation: blink 1.06s steps(1) infinite;
+}
+
+/* 液滴:从顶上掉下来,越掉越拉长 */
+.melt-drop {
+  position: absolute;
+  top: -30px;
+  z-index: 871;
+  border-radius: 52% 48% 45% 55% / 65% 60% 40% 35%;
+  animation-name: melt-drop;
+  animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+  animation-fill-mode: forwards;
+  pointer-events: none;
+}
+@keyframes melt-drop {
+  0% {
+    transform: translateY(0) scaleY(0.5);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateY(108vh) scaleY(1.5);
+    opacity: 0.85;
+  }
+}
+
+/* 底部水洼:融下来的东西在屏幕底积成一滩 */
+.melt-puddle {
+  position: absolute;
+  left: -3%;
+  right: -3%;
+  bottom: 0;
+  z-index: 870;
+  height: 0;
+  border-radius: 48% 38% 0 0 / 26px 20px 0 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 232, 130, 0.35),
+    rgba(250, 214, 74, 0.65) 45%,
+    rgba(214, 178, 40, 0.9)
+  );
+  box-shadow: 0 -8px 18px rgba(255, 232, 130, 0.35);
+  transform-origin: bottom;
+  animation: melt-puddle 9.6s cubic-bezier(0.5, 0.05, 0.85, 0.45) forwards;
+  pointer-events: none;
+}
+@keyframes melt-puddle {
+  from {
+    height: 0;
+  }
+  to {
+    height: 120px;
+  }
+}
+
+/* ── 曲别针桌宠 ───────────────────────────────── */
+/* 三层分工(见 Paperclip.tsx 头注):根层 .clip-root 永远不带 animation 槽
+   —— melt-drip 要占用它,倒放摘掉 mode-melt 后若入场动画也在根上会被
+   重新解析而重播。入场在子层(桌宠常驻,已无离场动画),idle 摇摆在最内层 */
+@keyframes clip-enter {
+  0% {
+    transform: translateY(30px) scale(0.55);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(-12px) scale(1.07);
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(3px) scale(0.98);
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+/* 0% 隐藏、100% 自然可见位 + forwards:reduced-motion 关掉动画时元素
+   直接处于可见正常位 —— 静态兜底,不靠动画才出现 */
+.clip-enter {
+  animation: clip-enter 0.55s cubic-bezier(0.3, 1.35, 0.45, 1) forwards;
+}
+/* idle 摇摆:站姿微晃,transform-origin 在脚底 */
+@keyframes clip-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1.4deg);
+  }
+  50% {
+    transform: translateY(-2.5px) rotate(1.4deg);
+  }
+}
+.clip-bob {
+  animation: clip-bob 3.4s ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
+
+/* 眨眼:一周期连眨两下。transform-box 让 g 以自身包围盒中心收合,
+   否则以 SVG 原点 (0,0) 缩放,眼睛会整个甩向左上角 */
+@keyframes clip-blink {
+  0%,
+  88%,
+  92%,
+  95.5%,
+  100% {
+    transform: scaleY(1);
+  }
+  90%,
+  94% {
+    transform: scaleY(0.06);
+  }
+}
+.clip-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: clip-blink 5.2s ease-in-out infinite;
+}
+
+/* 阴影把桌宠「压」在窗口上,和桌面件同一套黑色硬阴影语言 */
+.clip-svg {
+  display: block;
+  filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.25));
+}
+
+/* 气泡:player-tip 的视觉语言(#ffffe1/黑边/rotate45 尾巴)放大版。
+   本体不吃指针,只有 ✕ 吃 —— 气泡不许挡桌面。
+   宽度必须显式:气泡是 absolute,shrink-to-fit 的可用宽被包含块
+   (60px 的根)钳住,max-width 救不回来,会被压成一列竖排 */
+.clip-bubble {
+  position: absolute;
+  width: 216px;
+  padding: 6px 24px 7px 9px;
+  background: #ffffe1;
+  border: 1px solid #0a0a0a;
+  color: #0a0a0a;
+  font-size: 12px;
+  line-height: 1.5;
+  pointer-events: none;
+}
+.clip-bubble::after {
+  content: "";
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  background: #ffffe1;
+  transform: rotate(45deg);
+}
+/* 四方位:上下 × 尾巴贴哪边(尾巴永远指向身体) */
+.clip-above {
+  bottom: calc(100% + 12px);
+}
+.clip-below {
+  top: calc(100% + 12px);
+}
+.clip-tail-right {
+  right: 2px;
+}
+.clip-tail-left {
+  left: 2px;
+}
+.clip-above.clip-tail-right::after {
+  bottom: -4.5px;
+  right: 14px;
+  border-right: 1px solid #0a0a0a;
+  border-bottom: 1px solid #0a0a0a;
+}
+.clip-above.clip-tail-left::after {
+  bottom: -4.5px;
+  left: 14px;
+  border-left: 1px solid #0a0a0a;
+  border-bottom: 1px solid #0a0a0a;
+}
+.clip-below.clip-tail-right::after {
+  top: -4.5px;
+  right: 14px;
+  border-right: 1px solid #0a0a0a;
+  border-top: 1px solid #0a0a0a;
+}
+.clip-below.clip-tail-left::after {
+  top: -4.5px;
+  left: 14px;
+  border-left: 1px solid #0a0a0a;
+  border-top: 1px solid #0a0a0a;
+}
+
+/* 打字机光标:闪烁复用上面的 blink 关键帧(cursor-blink) */
+.clip-caret {
+  display: inline-block;
+  width: 6px;
+  height: 12px;
+  margin-left: 1px;
+  vertical-align: -2px;
+  background: #0a0a0a;
+}
+
+/* ✕ 关闭钮:气泡里唯一可点的东西。手写 :active —— Tailwind v4
+   自定义类挂不了变体前缀(同 .press 的注释) */
+.clip-x {
+  pointer-events: auto;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 16px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--chrome);
+  border: 1px solid #0a0a0a;
+  box-shadow:
+    inset 1px 1px #fff,
+    inset -1px -1px #808080;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  color: #0a0a0a;
+}
+.clip-x:active {
+  box-shadow:
+    inset 1px 1px #808080,
+    inset -1px -1px #fff;
+}
+
+/* ── 可乐彩蛋:糖分冲刺 → 咖啡因崩溃 ─────────────────── */
+/* 速率由 JS 编排(ColaRush 改 playbackRate),CSS 只管躁动和色彩:
+   冲刺 = 整页高频震 + 每个桌面件各自抖 + 暖色过载,崩溃 = 全部静止 + 断电灰。
+   本节所有 keyframes 都用 rush- 前缀:ColaRush 的速率编排按前缀跳过它们,
+   保持自身节奏不被 ×6 提得糊掉。transition 放基类,摘 class 时也能淡回 */
+.crt-screen {
+  transition: filter 0.55s ease;
+}
+.crt-screen.mode-rush {
+  /* 红色警报调:青绿桌面(hue≈180°)旋到红;窗口灰白无饱和不受影响 */
+  filter: saturate(1.65) contrast(1.15) hue-rotate(168deg);
+  /* animation 单槽:带上 crt-flicker 才不丢闪烁(mode-melt 同款处理) */
+  animation:
+    crt-flicker 4s ease-in-out infinite,
+    rush-quake 0.13s steps(2) infinite;
+}
+.crt-screen.mode-crash {
+  filter: grayscale(1) brightness(0.72) contrast(0.9);
+}
+@keyframes rush-quake {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-3px, 2px);
+  }
+  50% {
+    transform: translate(3px, -2px);
+  }
+  75% {
+    transform: translate(-2px, -2px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/* 桌面件躁动:图标/窗口/任务栏/报纸/曲别针各抖各的(幅度/频率/相位都错开,
+   躁而不齐)。clip 挂在 bob 内层,躁动暂时顶替 idle 摇摆(melt 互斥,不抢槽) */
+.mode-rush .dicon {
+  --jx: 2.5px;
+  --jr: 1deg;
+  animation: rush-jitter 0.34s linear infinite;
+}
+.mode-rush .win95 {
+  --jx: 2px;
+  --jr: 0.7deg;
+  animation: rush-jitter 0.4s linear infinite;
+}
+.mode-rush .taskbar {
+  --jx: 1.6px;
+  --jr: 0.4deg;
+  animation: rush-jitter 0.46s linear infinite;
+}
+.mode-rush .ledger {
+  --jx: 2.2px;
+  --jr: 0.9deg;
+  animation: rush-jitter 0.38s linear infinite;
+}
+.mode-rush .clip-bob {
+  --jx: 3px;
+  --jr: 1.4deg;
+  animation: rush-jitter 0.3s linear infinite;
+}
+.mode-rush .dicon:nth-child(2n) {
+  animation-delay: -0.11s;
+}
+.mode-rush .dicon:nth-child(3n) {
+  animation-delay: -0.21s;
+}
+.mode-rush .win95:nth-child(2n) {
+  animation-delay: -0.16s;
+}
+.mode-rush .ledger:nth-child(3n) {
+  animation-delay: -0.09s;
+}
+@keyframes rush-jitter {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate(var(--jx, 2px), calc(var(--jx, 2px) * -0.6)) rotate(var(--jr, 0.6deg));
+  }
+  40% {
+    transform: translate(calc(var(--jx, 2px) * -1), var(--jx, 2px)) rotate(calc(var(--jr, 0.6deg) * -1));
+  }
+  60% {
+    transform: translate(calc(var(--jx, 2px) * 0.7), calc(var(--jx, 2px) * -1)) rotate(0deg);
+  }
+  80% {
+    transform: translate(calc(var(--jx, 2px) * -0.5), calc(var(--jx, 2px) * 0.4)) rotate(var(--jr, 0.6deg));
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* HUD:照 melt-hud 的版式,红色警报配色;崩溃期褪成灰白 */
+.rush-hud {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 965;
+  padding: 1px 10px 2px;
+  font-family: var(--font-display);
+  font-size: 17px;
+  letter-spacing: 0.06em;
+  color: #ff5252;
+  background: rgba(10, 10, 10, 0.82);
+  border: 1px solid rgba(255, 82, 82, 0.45);
+  text-shadow: 0 0 8px rgba(255, 82, 82, 0.55);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.rush-hud.is-crash {
+  color: #cfcfcf;
+  border-color: rgba(207, 207, 207, 0.35);
+  text-shadow: none;
+}
+/* 冲刺期 HUD 自己也在抖(崩溃期要冻住,不抖);每帧带完整前缀是惯例 */
+.rush-hud:not(.is-crash) {
+  animation: rush-hudshake 0.18s linear infinite;
+}
+@keyframes rush-hudshake {
+  0%,
+  100% {
+    transform: translateX(-50%) translate(0, 0);
+  }
+  25% {
+    transform: translateX(-50%) translate(1.5px, -1px);
+  }
+  50% {
+    transform: translateX(-50%) translate(-1.5px, 1px);
+  }
+  75% {
+    transform: translateX(-50%) translate(1px, 1.5px);
+  }
+}
+
+/* 鼠标残影:光标轨迹上留一串渐隐箭头(JS 按 pointermove 节流生成,用完即删) */
+.rush-ghost {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.75;
+  animation: rush-ghost-fade 0.6s ease-out forwards;
+}
+@keyframes rush-ghost-fade {
+  0% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+}
+
+/* 红色内阴影:屏幕边缘的血红 vignette,随心跳呼吸(rush- 前缀,速率编排跳过) */
+.rush-redglow {
+  position: absolute;
+  inset: 0;
+  z-index: 880;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 38%,
+    rgba(255, 0, 0, 0.32) 82%,
+    rgba(180, 0, 0, 0.5) 100%
+  );
+  animation: rush-redpulse 0.5s ease-in-out infinite alternate;
+}
+@keyframes rush-redpulse {
+  from {
+    opacity: 0.66;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.rush-hud-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 7px;
+  vertical-align: 1px;
+  background: currentColor;
+  animation: blink 1.06s steps(1) infinite;
+}
+
+/* 冲刺速度线:垂直细纹向左疾扫(无缝 = 位移一个 repeating 周期),
+   中部 mask 渐隐成"隧道"。动画名 rush- 前缀,ColaRush 的速率编排会跳过它 */
+.rush-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 872;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 90px,
+    rgba(255, 176, 0, 0.13) 90px 94px,
+    transparent 94px 180px,
+    rgba(255, 255, 255, 0.07) 180px 184px
+  );
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 78%);
+  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 78%);
+  animation: rush-lines 0.22s linear infinite;
+}
+@keyframes rush-lines {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -184px 0;
+  }
+}
+
+/* ── 信号干扰:不定时屏闪(SignalGlitch.tsx)────── */
+/* WebGL 故障画布:发作时截帧冻结画面,shader 连续劣化演化。
+   覆盖整个 crt-screen 矩形(玻璃模式下按实测矩形定位,跟着圆角走)。
+   z 897:错误风暴弹窗(≤896)之上、扫描线(900)之下 —— 冻结帧也是
+   "画面",要被显像管栅格压一遍;不挡指针,底下的桌面照常可点 */
+.glitch-fx {
+  position: absolute;
+  z-index: 897;
+  pointer-events: none;
+  opacity: 0;
+}
+.glitch-fx.is-live {
+  opacity: 1;
+}
+
+/* 发作期间(body 上挂 glitching):管子的静态层轻微退让,呼吸一下 */
+body.glitching .scanlines {
+  opacity: 0.78;
+}
+body.glitching .vignette {
+  opacity: 0.7;
+}
+
+/* ── 电视检修小游戏(REPAIR.EXE,RepairGame.tsx)── */
+/* Spark: a hot yellow star with layered glow, two-frame steps() flicker for that
+   short-circuit feel, plus an expanding ping ring — the classic "whack HERE"
+   affordance; on a snow-filled screen the star alone reads as noise. */
+.repair-spark {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+}
+.repair-spark::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 2px solid #ff3000;
+  border-radius: 50%;
+  animation: repair-spark-ping 0.9s ease-out infinite;
+}
+.repair-spark::after {
+  content: "";
+  display: block;
+  width: 18px;
+  height: 18px;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  background: #ffe97c;
+  filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 5px #ffb000) drop-shadow(0 0 9px #ff3000);
+  animation: repair-spark-flick 0.36s steps(1) infinite;
+}
+.repair-spark:focus-visible {
+  outline: 1px dotted #0a0a0a;
+  outline-offset: -6px;
+}
+@keyframes repair-spark-ping {
+  0% {
+    transform: scale(0.45);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+@keyframes repair-spark-flick {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(0.68) rotate(22deg);
+  }
+}
+
+/* Onomatopoeia chip per whack: pops up and fades out (a JS timer removes it
+   regardless, so reduced-motion only skips the flight). */
+.repair-pop {
+  position: absolute;
+  z-index: 11;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+}
+.repair-pop > span {
+  display: block;
+  padding: 0 4px;
+  background: #fff;
+  border: 1px solid #0a0a0a;
+  font-family: var(--font-display);
+  font-size: 15px;
+  line-height: 20px;
+  color: #0a0a0a;
+  animation: repair-pop-rise 0.7s ease-out forwards;
+}
+@keyframes repair-pop-rise {
+  0% {
+    transform: translateY(4px) scale(0.5);
+    opacity: 0;
+  }
+  20% {
+    transform: translateY(-2px) scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-24px) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Final whack: one white flash over the screen as the signal locks. Base opacity 0
+   on purpose — the global reduced-motion rule kills the animation, and a dead
+   animation must not leave the screen bleached white. */
+.repair-flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+  animation: repair-flash-out 0.45s ease-out forwards;
+}
+@keyframes repair-flash-out {
+  0% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ── Sticky scraps ──────────────────────────────────────────── */
+/* A reminder firing rattles the scrap. Keyframes own `transform` while
+   playing, so each frame re-states the resting tilt via --tilt (set inline
+   per note); the inline transform takes back over once the run ends. */
+@keyframes sticky-shake {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(var(--tilt, 0deg));
+  }
+  15% {
+    transform: translate(-3px, 1px) rotate(calc(var(--tilt, 0deg) - 1.2deg));
+  }
+  30% {
+    transform: translate(3px, -1px) rotate(calc(var(--tilt, 0deg) + 1.2deg));
+  }
+  45% {
+    transform: translate(-2px, -2px) rotate(calc(var(--tilt, 0deg) - 0.8deg));
+  }
+  60% {
+    transform: translate(2px, 2px) rotate(calc(var(--tilt, 0deg) + 0.8deg));
+  }
+  80% {
+    transform: translate(-1px, 0) rotate(var(--tilt, 0deg));
+  }
+}
+.sticky-shake {
+  animation: sticky-shake 0.55s ease-in-out 3;
+}
+
+/* 定位 blink from the manager: outline instead of box-shadow — the scrap's
+   layered inline shadow stays untouched underneath the run. */
+@keyframes sticky-flash {
+  0%,
+  100% {
+    outline-color: transparent;
+  }
+  20%,
+  60% {
+    outline-color: #b02020;
+  }
+}
+.sticky-flash {
+  outline: 2px solid transparent;
+  outline-offset: 3px;
+  animation: sticky-flash 1.5s steps(1) 1;
+}
+
+/* Toast scraps settle onto the desk corner. */
+@keyframes sticky-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+.sticky-pop {
+  animation: sticky-pop 0.22s ease-out;
+}
+
+/* 截图快门白闪(doc 07):基态 opacity 0 —— 全局 reduced-motion 关动画时
+   自然不可见,不会冻在半透明白屏上。 */
+.shot-flash {
+  opacity: 0;
+  animation: shot-flash 0.14s ease-out;
+}
+@keyframes shot-flash {
+  0% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+  }
+}

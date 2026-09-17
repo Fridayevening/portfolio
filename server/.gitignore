@@ -1,0 +1,19 @@
+# Secrets — never commit the real token
+.env
+
+# Dependencies / build output
+node_modules/
+dist/
+
+# Python environment (created by `npm run python:setup`)
+.venv/
+
+# Runtime data (uploaded files, hotaru/lab workspaces, trash)
+.data/
+
+# Logs
+*.log
+npm-debug.log*
+
+# macOS
+.DS_Store

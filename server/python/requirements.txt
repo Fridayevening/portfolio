@@ -1,0 +1,4 @@
+# 与实验场 repo 根 .venv(python 3.14.6)实测可用组合一致;av 的 wheel 对 python 小版本敏感,钉死最稳
+pillow==12.3.0
+numpy==2.5.2
+av==18.1.0
