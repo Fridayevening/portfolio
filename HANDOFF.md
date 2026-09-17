@@ -1,7 +1,7 @@
 # NewBoy — Handoff / 交接文档
 
 > 本文档是给后续 AI / 协作者的第一入口。开工前先读完本文 + `frontend/AGENTS.md`。
-> 版本快照：2026-09-15（项目已在本地跑通）。
+> 版本快照：2026-09-17（代码已推 GitHub `Fridayevening/portfolio`，public；i18n 已完整完成；尚未部署）。
 
 ## 1. 项目是什么
 
@@ -16,12 +16,19 @@
 Yanfeiportfolio/
 ├── HANDOFF.md          # 本文档
 ├── README.md           # 面向人的简要说明
+├── MIGRATION-PLAN.md   # portfolio 内容迁移计划（设计提案，未实施）
+├── LICENSE             # MIT
+├── .gitignore          # 根：排除 zip
 ├── frontend/           # Next.js 16 前端（:3030）
+│   ├── .gitignore
+│   ├── .env.example    # NEXT_PUBLIC_API_URL 模板
 │   └── src/components/desktop/   # 桌面模拟全部组件
 └── server/             # NestJS 12 后端（:3031，/v1 前缀）
+    ├── .gitignore
+    ├── .env.example    # 完整环境变量模板（复制成 .env）
     ├── src/modules/    # 9 个业务模块（见 §6）
     ├── python/         # hotaru/laser 脚本（冻结副本）
-    └── .venv/          # hotaru 的 Python 环境（python:setup 产物）
+    └── .venv/          # hotaru 的 Python 环境（python:setup 产物，已 gitignore）
 ```
 
 ## 3. 技术栈
@@ -41,7 +48,7 @@ Yanfeiportfolio/
 3. **后端依赖**：`cd server && npm install`。
 4. **前端依赖**：`cd frontend && npm install`。
 5. **Python 环境**（hotaru 功能需要）：`cd server && npm run python:setup`（建 `.venv`）。
-6. **`server/.env`**（不存在时写接口 401 + 行情/新闻拉不到）：
+6. **`server/.env`**（不存在时写接口 401 + 行情/新闻拉不到）：从 `server/.env.example` 复制一份再改，**不要提交 `.env`**：
    ```
    OWNER_TOKEN=<≥8位>
    MARKET_PROXY_URL=http://127.0.0.1:7897   # 留空=直连
@@ -82,7 +89,7 @@ curl http://127.0.0.1:3031/v1/hotaru/ping     # Python 环境就绪?
 
 ## 7. 关键代码约定（必须遵守）
 
-- **提交**：Conventional Commits，本地 hook 强制。格式 `<type>(<scope>): <subject>`，scope 常用 `desktop`/`market`/`hotaru`/`server`。
+- **提交**：Conventional Commits，格式 `<type>(<scope>): <subject>`，scope 常用 `desktop`/`market`/`hotaru`/`server`。目前**未装** husky/commitlint hook（单人项目暂不需要），提交信息靠人工遵循格式。
 - **注释**：新注释必须英文、解释 why 不重复 what；不写 TODO/历史；同一文件不混中英。
 - **不造假数据**：行情/新闻拉取失败时冻结旧值，绝不编造。
 
@@ -100,12 +107,14 @@ curl http://127.0.0.1:3031/v1/hotaru/ping     # Python 环境就绪?
 - **单一事实源**：`server/python/hotaru.py` 是冻结副本，源在 `skill-lab/HypeBoyImgTool/hotaru/`，勿单改此副本。
 - **改代码前先 grep 相关模块**，尊重既有结构（模块边界、纯函数层、DI 约定）。
 - **改共享文件**（`db.ts`、`env.ts`、`watchlist.ts`、`market-providers.ts`）前先说明影响面。
-- **不要自动 push**；不要自动申请/发消息（本项目是本地作品集，发布动作需本人确认）。
+- **仓库是 public**（`Fridayevening/portfolio`）：`.env` 已 gitignore，提交前自查 `git status` 不混入密钥；不要自动 `git push` 或部署，发布/部署动作需本人确认；提交信息遵循 Conventional Commits。
 - **翻译/文案**：面向用户的字符串改英文时，注意 i18n 机制（见 i18n 专项文档）。
 
 ## 10. 已知待办 / 未完成项
 
-- [x] 网站 i18n（中/英切换）——**已完整完成**，见 §11（前端全部 UI 文案 + 后端全部错误消息 + 行情播报均已双语）。
+- [x] 网站 i18n（中/英切换）——**已完整完成**，见 §11（前端全部 UI 文案 + 后端全部错误消息 + 行情播报均已双语），运行时冒烟已验证。
+- [ ] **部署上线**（尚未开始）——见 §12 部署清单。
+- [ ] **portfolio 内容迁移**（4 Work + 2 Research 搬进 NewBoy）——见 `MIGRATION-PLAN.md`（设计提案，未实施；Phase 0 事实确认优先）。
 - [ ] `lab` 激光卡片需要 Blender（未安装）。
 - [ ] news 的 `retry3s` 可升级为与 market 一致的带延迟多次重试。
 - [ ] 前端 `public/` 含 42MB 媒体资源，仓库/部署时考虑拆分。
@@ -130,3 +139,23 @@ curl http://127.0.0.1:3031/v1/hotaru/ping     # Python 环境就绪?
 **新闻内容**：深潮源为中文，`Ledger.tsx` 的 `liveEditions()` 在英文模式过滤掉无 `headline` 且正文含汉字的条目；AI 编选稿自带中英双字段，前端按语言取 `headline/text`（en）或 `headlineZh/textZh/analysis`（zh）。
 
 **续译流程**：grep 文件中的中文字符 → 在 `dict.ts` 加键（zh+en）→ 组件内 `useI18n()` 后用 `t("key")` 替换硬编码字符串。注意模块作用域常量（如 `WIN_DEFS`）不能直接用 hook，用 `titleKey` 模式或把常量搬进组件。
+
+## 12. 仓库与部署（2026-09-17 起）
+
+**Git 仓库**：`git@github.com:Fridayevening/portfolio.git`（public），分支 `main`，MIT LICENSE。
+- 首次提交 `chore: initial commit`（154 文件），已确认 `.env`/`.venv`/`node_modules`/zip 均未入库。
+- `frontend/.env.example`、`server/.env.example` 是环境变量模板；`.env` 一律 gitignore。
+
+**部署清单（未开始，接手时按顺序）**：
+1. 托管 MongoDB（Atlas 免费层即可），设 `MONGODB_URI`。
+2. 服务器环境变量：`OWNER_TOKEN`、`NEXT_PUBLIC_API_URL`（前端构建时指向后端公网地址，否则生产走离线假数据模式）。
+3. 收紧 `server/src/main.ts` 的 `app.enableCors()` 到生产域名。
+4. 行情/新闻网络：服务器直连时把 `MARKET_PROXY_URL`/`NEWS_PROXY_URL` 留空；或配一个 egress 代理。
+5. hotaru：服务器跑 `cd server && npm run python:setup`，或打 Docker 镜像（当前无 Dockerfile）。
+6. `lab` 无 Blender 则保持休眠（有守卫，不影响其他功能）。
+7. **后端必须是常驻进程**（行情 SSE 是长连接，不能上 serverless）；心跳每 15s 一发，空闲不会被掐断。建议：前端 Vercel（`NEXT_PUBLIC_API_URL` 指向后端），后端 Render/Fly/VPS。
+
+**内容迁移（下一阶段主线）**：
+- 计划见 `MIGRATION-PLAN.md`：把 `coding-workspace/portfolio` 的 4 个 Work + 2 篇 Research 搬进 NewBoy（新增 Work/Research 桌面图标 + CaseWindow/ResearchWindow）。
+- 设计稿参考：`coding-workspace/work-case-preview.html`（独立 HTML mockup，展示一个 Work 案例的最终排版；不在本仓库内）。
+- **硬门槛**：Uniubi 数字（5,381 / 850K+ / 7,610）未在职业材料里找到证据、内容包 `needs-review`，Phase 0 必须先经 Yanfei 确认；`draft`/`needs-review` 内容不得进网站。
