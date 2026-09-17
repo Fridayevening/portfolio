@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: newboy-api
+    runtime: docker
+    plan: free
+    rootDir: server
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /v1/health
+    autoDeployTrigger: off
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: OWNER_TOKEN
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: NEWS_PROXY_URL
+        value: ""
+      - key: MARKET_PROXY_URL
+        value: ""
