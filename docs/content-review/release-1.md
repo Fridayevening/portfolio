@@ -72,11 +72,11 @@ Required corrections:
 - Remove `15 admin modules` and `8 Mini Program modules` as headline metrics. The source audit in `uniubi-module-audit.md` records the actual product areas without imposing an unsupported counting rule.
 - Describe the Mini Program as adapting UstarMobile and UstarAccess workflows, using representative functions rather than a numeric module total.
 
-Still requiring review:
+Confirmed named-project scope:
 
-- Two custom enterprise projects.
-- Henan Yuzi and XIZI Elevator may be named publicly; the exact surrounding project claims still require factual confirmation.
-- The exact six-party stakeholder description and reuse of custom modules.
+- Henan Yuzi and XIZI Elevator may be named publicly.
+- The Henan project involved the education bureau, schools, hardware vendors, software integrators, telecom operators and Uniubi's internal team. Yanfei coordinated the six parties; the core delivery took three months, completed on time and was reused as a delivery model in other regions.
+- The XIZI Elevator capability entered the standard Uspace product.
 
 ### Operations analytics and supply chain
 
@@ -107,31 +107,33 @@ Safe release baseline:
 
 Claims requiring evidence or removal:
 
-- `25% adoption improvement`, including the 30% to 38% completion-rate calculation.
 - Assertions that five named competitors offered no negotiation-closing capability.
 - Claims of a complete production Stripe subscription system unless supported by product evidence.
 - Causal language connecting onboarding or draft-quality changes to conversion.
+
+Confirmed measurement scope:
+
+- Ten sample customers each used two versions for two weeks on their own mailbox data. Product telemetry and manual records showed full five-stage completion moving from approximately 30% to 38%, a relative improvement of approximately 25%. This is a small, non-randomised directional comparison, not a causal result.
 
 ## Research review
 
 ### Urgent lab alert workflow
 
-Raw Career Workspace material currently supports a nine-person healthcare survey plus one separate expert interview, not nine interviews. Before approval, confirm:
+Confirmed scope:
 
-- Whether to correct the public case to a survey of nine healthcare professionals plus one expert interview with Dr Grace.
-- Whether `8 of 9` may be published as a finding.
-- The measurement basis for any 30% response-speed or 88.9% preference/adoption claim; otherwise omit both.
-- Whether the public Figma prototype contains names, comments, account details or restricted assets.
-- Whether the individual-contribution wording accurately distinguishes Yanfei's work from the multidisciplinary team.
+- Use a nine-person healthcare survey plus one separate expert interview with Dr Grace, not nine interviews.
+- `8 of 9` may be published as an exploratory survey finding.
+- Omit the 30% response-speed and 88.9% preference/adoption claims.
+- The approved Figma prototype may be linked publicly; sensitive participant, account and clinical material has been removed.
+- Use the conservative multidisciplinary-team contribution wording in the approved entry.
 
 ### Lawmate accessible legal aid
 
-The current draft labels the work as an early concept and discloses the two-user prototype comparison and internal card sort. Before approval, confirm:
+Confirmed scope:
 
-- Whether `Group 202` should be public or replaced with `a multidisciplinary student team`.
-- Whether stakeholder interviews included the Legal Aid Board and may be named publicly.
-- Whether the public Figma prototype contains names, comments, account details or restricted assets.
-- Whether all screenshots and assets are owned by the project team or licensed for portfolio publication.
+- Use `a multidisciplinary student team`, not `Group 202`.
+- The Legal Aid Board interview may be named.
+- The approved Figma prototype may be linked publicly and its visual assets have public-display permission.
 
 ## Release rule
 

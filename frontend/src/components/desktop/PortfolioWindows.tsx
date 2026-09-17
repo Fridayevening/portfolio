@@ -18,15 +18,19 @@ function PortfolioFolder({ kind }: { kind: "work" | "research" }) {
         label: local(entry.title, lang),
         icon: <PixelIcon sprite={MdDocIcon} size={32} />,
         onOpen: () => {
+          const width = Math.min(820, window.innerWidth - 24);
+          const height = Math.min(650, window.innerHeight - 60);
+          const preferredX = kind === "work" ? 220 : 300;
+          const preferredY = kind === "work" ? 70 : 100;
           api.openDef({
             id: `portfolio-${entry.id}`,
             title: local(entry.title, lang),
             titleByLang: entry.title,
             icon: <PixelIcon sprite={MdDocIcon} size={14} />,
-            w: 700,
-            h: 560,
-            x: kind === "work" ? 260 : 340,
-            y: kind === "work" ? 90 : 130,
+            w: width,
+            h: height,
+            x: Math.min(preferredX, Math.max(0, window.innerWidth - width - 8)),
+            y: Math.min(preferredY, Math.max(0, window.innerHeight - height - 44)),
             render: () => <PortfolioReader entry={entry} />,
           });
         },
@@ -60,7 +64,7 @@ function PortfolioReader({ entry }: { entry: PortfolioEntry }) {
         {entry.metrics && (
           <div className="grid grid-cols-2 sm:grid-cols-4 border-l border-t border-black mb-5">
             {entry.metrics.map((metric) => (
-              <div key={`${entry.id}-${metric.value}`} className="border-r border-b border-black p-2 bg-white/45">
+              <div key={`${entry.id}-${metric.value}-${metric.label.en}`} className="border-r border-b border-black p-2 bg-white/45">
                 <strong className="block text-[18px]">{metric.value}</strong>
                 <span className="text-[10px] leading-tight block">{local(metric.label, lang)}</span>
               </div>

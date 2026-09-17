@@ -15,10 +15,13 @@ Yanfei is the default integration owner. A task may name another integration own
 | NB-005 | Prepare production runtime and security | Codex | review | Deployment configuration, environment templates, CORS, media and runtime documentation | `52193df` |
 | NB-006 | Deploy and verify staging | Yanfei (integration) | blocked | Hosting-provider configuration and staging environment | — |
 | NB-007 | Release and verify production | Yanfei (integration) | blocked | Production hosting, domain, environment and release record | — |
+| NB-008 | Restore full Work and Research narratives with corrected facts | Codex | review | `docs/content-review/**`, `frontend/src/components/desktop/portfolioContent.ts`, Work/Research presentation files and relevant tests | `521be15` |
 
 ## Dependency order
 
 `NB-003 → NB-004 → NB-005 → NB-006 → NB-007`
+
+`NB-008` is a post-release content-remediation task. It may begin only after the implementer performs the recovery and evidence audit in `docs/handoffs/NB-008.md`. It must preserve the old portfolio's useful narrative depth while treating the approved evidence ledger and Yanfei's explicit confirmations as authoritative over old website copy.
 
 - `NB-004` unblocks only when the release content is explicitly marked `approved`.
 - `NB-005` starts after the local Work and Research experience passes its quality gates.
