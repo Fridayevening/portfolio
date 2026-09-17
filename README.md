@@ -17,9 +17,9 @@ Yanfeiportfolio/
 
 ### 前置条件
 
-- Node.js ≥ 24 LTS（推荐）
+- Node.js 24 LTS（必需；Node.js 23 与当前 Nest CLI 工具链不兼容）
 - MongoDB 运行于 `127.0.0.1:27017`（库名 `newboy`，无鉴权）
-- Python 3.14（仅 `hotaru` 图像/视频功能需要）
+- Python 3.12（仅 `hotaru` 图像/视频功能需要）
 
 ### 后端
 
@@ -56,3 +56,11 @@ MONGODB_URI=mongodb://127.0.0.1:27017
 
 - `server/python/` 是冻结副本，`hotaru.py` 的 source of truth 在 `skill-lab/HypeBoyImgTool/hotaru/`，勿单改此副本。
 - 提交规范：Conventional Commits（本地 hook 强制），见 `frontend/AGENTS.md`。
+
+## 项目文档
+
+- 多 AI 协作与中断接管：[docs/MULTI-AI-WORKFLOW.md](docs/MULTI-AI-WORKFLOW.md)
+- 当前项目状态：[HANDOFF.md](HANDOFF.md)
+- 任务所有权：[TASKS.md](TASKS.md)
+- 架构与运行：[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- 部署手册：[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)

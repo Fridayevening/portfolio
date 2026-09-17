@@ -1,161 +1,95 @@
-# NewBoy — Handoff / 交接文档
+# NewBoy — Current Handoff
 
-> 本文档是给后续 AI / 协作者的第一入口。开工前先读完本文 + `frontend/AGENTS.md`。
-> 版本快照：2026-09-17（代码已推 GitHub `Fridayevening/portfolio`，public；i18n 已完整完成；尚未部署）。
+> This is the current integration snapshot for the next collaborator. Read `AGENTS.md`, this file, `TASKS.md`, and the nearest directory-level `AGENTS.md` before changing files.
 
-## 1. 项目是什么
+## Snapshot
 
-代号 **NewBoy** 的个人作品集网站，以「复古桌面电脑（Windows 95 风）」的交互形式呈现。
-- 前端：模拟一个可玩的操作系统桌面（窗口、开始菜单、扫雷、NES 模拟器、文件系统、便签、行情窗、图像实验场）。
-- 后端：NestJS API（文章、文件、新闻、行情、偏好、主人模式、hotaru 图像/视频处理）。
-- Python：`hotaru.py` 等脚本把图片/视频转成复古质感（CRT / miniDV / dreamcore 等预设）。
+- Updated: 2026-09-17
+- Updated by: Codex
+- Base commit: `52193df`
+- Working tree at start: clean
+- Repository: `Fridayevening/portfolio` (public)
+- Default branch: `main`
+- Deployment: production preparation active; no external environment created
 
-## 2. 目录结构
+The working tree may contain the uncommitted collaboration-document changes described under **Awaiting review**. Run `git status --short` and inspect the diff instead of assuming this snapshot is current.
 
-```
-Yanfeiportfolio/
-├── HANDOFF.md          # 本文档
-├── README.md           # 面向人的简要说明
-├── MIGRATION-PLAN.md   # portfolio 内容迁移计划（设计提案，未实施）
-├── LICENSE             # MIT
-├── .gitignore          # 根：排除 zip
-├── frontend/           # Next.js 16 前端（:3030）
-│   ├── .gitignore
-│   ├── .env.example    # NEXT_PUBLIC_API_URL 模板
-│   └── src/components/desktop/   # 桌面模拟全部组件
-└── server/             # NestJS 12 后端（:3031，/v1 前缀）
-    ├── .gitignore
-    ├── .env.example    # 完整环境变量模板（复制成 .env）
-    ├── src/modules/    # 9 个业务模块（见 §6）
-    ├── python/         # hotaru/laser 脚本（冻结副本）
-    └── .venv/          # hotaru 的 Python 环境（python:setup 产物，已 gitignore）
-```
+## Project state
 
-## 3. 技术栈
+NewBoy is an interactive Windows 95-style portfolio:
 
-| 层 | 技术 | 关键版本 |
-|----|------|----------|
-| 前端 | Next.js (App Router, Turbopack) / React / Tailwind 4 / three.js / jsnes | Next 16.3.4, React 19.2.8 |
-| 后端 | NestJS / MongoDB 原生驱动（非 Mongoose）/ @nestjs/schedule / undici | NestJS 12, mongodb 7.6 |
-| 数据库 | MongoDB（库名 `newboy`），无鉴权，本地 `127.0.0.1:27017` | mongod 8.0.32 |
-| Python | pillow / numpy / av(PyAV) | Python 3.12（兼容） |
-| 包管理 | npm（镜像 npmmirror）、pip（镜像清华 TUNA） | — |
+- Next.js 16 frontend on port 3030.
+- NestJS 12 API on port 3031 with the `/v1` prefix.
+- MongoDB database `newboy` on local port 27017.
+- Python image and video processing through Hotaru scripts.
 
-## 4. 环境准备（新机器一次性）
+The application runs locally. Frontend UI, backend errors, offline market messages, SSE market alerts, and supported dynamic news content have Chinese and English behavior. The English UI has passed the previous SSR Chinese-residue audit, and the completed language work passed TypeScript and runtime smoke checks.
 
-1. **Node 24 LTS**（nvm 默认 `24`；不要用 23，Nest CLI 的 angular-devkit 会崩）。
-2. **MongoDB**：本机 `mongod` 跑在 27017（launchd 服务名 `mongodb-community`）。
-3. **后端依赖**：`cd server && npm install`。
-4. **前端依赖**：`cd frontend && npm install`。
-5. **Python 环境**（hotaru 功能需要）：`cd server && npm run python:setup`（建 `.venv`）。
-6. **`server/.env`**（不存在时写接口 401 + 行情/新闻拉不到）：从 `server/.env.example` 复制一份再改，**不要提交 `.env`**：
-   ```
-   OWNER_TOKEN=<≥8位>
-   MARKET_PROXY_URL=http://127.0.0.1:7897   # 留空=直连
-   NEWS_PROXY_URL=http://127.0.0.1:7897
-   ```
-7. **网络**：GitHub/PyPI 直连不通，走 Clash Verge（混合端口 7897）。终端代理已在 `~/.zshrc` 自动配置（含 no_proxy 白名单）；pip 已配清华镜像。
+Stable architecture, setup, module responsibilities, i18n design, operational constraints, and deployment guidance live in `docs/ARCHITECTURE.md`.
 
-## 5. 启动与验证
+## Last completed
 
-```bash
-# 后端（两个终端分别跑）
-cd server && npm run dev        # 或 npm run build && node dist/main.js
-cd frontend && npm run dev      # http://localhost:3030
+- Completed frontend and backend Chinese/English support.
+- Localized deep windows, games, creative tools, file dialogs, API errors, market states, and news editions.
+- Removed the copyrighted default lyric excerpt from `notes.txt` and replaced it with original placeholder copy.
+- Created the public Git repository and added the MIT license.
+- Audited, approved and implemented four bilingual Work cases and two bilingual Research studies.
+- Added Work and Research desktop folders, immediate bilingual switching and public Figma links.
+- Prepared the Vercel + Render Docker + MongoDB Atlas deployment configuration and runbook; NB-005 awaits independent review.
 
-# 健康检查
-curl http://127.0.0.1:3031/v1/health
-# 关键自检
-curl http://127.0.0.1:3031/v1/market/quotes   # 行情（全走 CoinGecko）
-curl http://127.0.0.1:3031/v1/news/today      # 新闻（CoinDesk/Cointelegraph/深潮）
-curl http://127.0.0.1:3031/v1/hotaru/ping     # Python 环境就绪?
-```
+## Collaboration workflow
 
-## 6. 后端模块职责
+- `NB-001` was accepted by Yanfei on 2026-09-17.
+- Codex is the default implementer and verifier; Copilot provides independent diff review; Yanfei remains the integration owner and controls commits, pushes and deployments unless a task explicitly says otherwise.
+- Work proceeds sequentially by default. Parallel work requires non-overlapping file scopes and dedicated branches or worktrees.
 
-| 模块 | 职责 |
-|------|------|
-| `health` | `GET /v1/health` 探活 |
-| `auth` | owner token 解锁（`OWNER_TOKEN`，fail-closed：未配置=全部写接口 401） |
-| `articles` | 文章 CRUD + secret 切换 |
-| `files` | 虚拟文件系统（回收站/复制/移动/restore） |
-| `news` | 三路源并发抓取（2 路 RSS 走代理 + 深潮直连），可选 AI 编选 |
-| `market` | 行情引擎：watchlist 全走 CoinGecko，5 分钟轮询，SSE 流 |
-| `preferences` | 用户 UI 偏好（DB 持久化） |
-| `hotaru` | 编排 Python 子进程做图像/视频复古滤镜 |
-| `lab` | 激光卡片（需 Blender，本机未装） |
+## Next work
 
-**约定**：全局 `/v1` 前缀、ValidationPipe 校验、`db.ts` 惰性 MongoClient（base36 id、3s 超时→503）。
+1. Have Copilot independently review the NB-004 and NB-005 diff using `docs/handoffs/NB-005.md`.
+2. Resolve review findings, then obtain Yanfei's explicit authorization for commit and push.
+3. Select or confirm provider accounts and billing, then deploy and verify staging under `NB-006`.
+4. Release production under `NB-007` only after Yanfei accepts staging and approves the release action.
 
-## 7. 关键代码约定（必须遵守）
+## Blockers and decisions required
 
-- **提交**：Conventional Commits，格式 `<type>(<scope>): <subject>`，scope 常用 `desktop`/`market`/`hotaru`/`server`。目前**未装** husky/commitlint hook（单人项目暂不需要），提交信息靠人工遵循格式。
-- **注释**：新注释必须英文、解释 why 不重复 what；不写 TODO/历史；同一文件不混中英。
-- **不造假数据**：行情/新闻拉取失败时冻结旧值，绝不编造。
+- Uniubi scale and team facts were corrected and confirmed on 2026-09-17. Withdrawn figures must not be copied from the old site; the six first-release entries are approved under `docs/content-review/approved/`.
+- Content marked `draft` or `needs-review` must not be published.
+- The first Work and Research release uses reviewed static typed frontend data and dedicated portfolio windows. A backend content editor remains optional future work.
 
-## 8. 踩过的坑（重要）
+## Known follow-up items
 
-1. **undici ProxyAgent 冷域名首连 TLS 断开**：经 Clash 代理第一次连某个域偶发 `socket disconnected before TLS`。已在 `market-providers.ts` 的 `fetchJson` 加「3 次带 300/800ms 延迟」的重试（只重试网络错误，429 交给引擎退避）。news 的 `retry3s` 是旧方案（3s 后单次重试），仍可能漏。
-2. **hotaru 服务在启动时固定 python 路径**：`.venv` 必须在后端启动前就绪，否则 `pythonOk:false`，要重启后端才会重测。
-3. **Node 版本**：23 会崩 Nest CLI；用 24 LTS。
-4. **`MARKET_PROXY_URL` 默认空**（news 默认就是 7897），忘记配就直连超时。
-5. **pip 直连 PyPI 会被干扰**：已配清华镜像；新 venv 若报 SSL 错先查 `pip config list`。
+- Deploy the frontend, persistent backend, and managed MongoDB database.
+- Measure the approximately 42 MB frontend media transfer in staging; optimize the 23 MB audio file if bandwidth or startup cost warrants it.
+- Install Blender only if full laser-card rendering is required.
+- Consider upgrading the news retry strategy to match the market request strategy.
+- Add About Me, contact, and résumé content after the public facts are approved.
 
-## 9. 多 AI 协作规则
+## Non-negotiable boundaries
 
-- **先读本文 + `frontend/AGENTS.md`**，再动手。
-- **单一事实源**：`server/python/hotaru.py` 是冻结副本，源在 `skill-lab/HypeBoyImgTool/hotaru/`，勿单改此副本。
-- **改代码前先 grep 相关模块**，尊重既有结构（模块边界、纯函数层、DI 约定）。
-- **改共享文件**（`db.ts`、`env.ts`、`watchlist.ts`、`market-providers.ts`）前先说明影响面。
-- **仓库是 public**（`Fridayevening/portfolio`）：`.env` 已 gitignore，提交前自查 `git status` 不混入密钥；不要自动 `git push` 或部署，发布/部署动作需本人确认；提交信息遵循 Conventional Commits。
-- **翻译/文案**：面向用户的字符串改英文时，注意 i18n 机制（见 i18n 专项文档）。
+- Do not fabricate market data, news, portfolio evidence, metrics, or user feedback.
+- Preserve the last valid market or news value when providers fail.
+- Do not independently edit the frozen `server/python/hotaru.py` integration copy.
+- Explain the impact before changing `db.ts`, `env.ts`, `watchlist.ts`, or `market-providers.ts`.
+- Do not commit `.env`, credentials, tokens, or private information.
+- Do not push, deploy, send messages, apply for anything, or contact third parties without Yanfei's explicit approval.
+- Use Conventional Commits and keep unrelated changes separate.
 
-## 10. 已知待办 / 未完成项
+## Verification record
 
-- [x] 网站 i18n（中/英切换）——**已完整完成**，见 §11（前端全部 UI 文案 + 后端全部错误消息 + 行情播报均已双语），运行时冒烟已验证。
-- [ ] **部署上线**（尚未开始）——见 §12 部署清单。
-- [ ] **portfolio 内容迁移**（4 Work + 2 Research 搬进 NewBoy）——见 `MIGRATION-PLAN.md`（设计提案，未实施；Phase 0 事实确认优先）。
-- [ ] `lab` 激光卡片需要 Blender（未安装）。
-- [ ] news 的 `retry3s` 可升级为与 market 一致的带延迟多次重试。
-- [ ] 前端 `public/` 含 42MB 媒体资源，仓库/部署时考虑拆分。
+The i18n completion snapshot previously passed:
 
-## 11. i18n 机制（中英切换）
+- Frontend TypeScript checking.
+- English SSR Chinese-character audit.
+- Runtime language-switching smoke checks.
 
-**架构**：轻量自研方案，不用 next-intl、不改 URL 路由。
+NB-004 and NB-005 additionally passed frontend type/build checks, browser Work/Research smoke checks, server no-emit TypeScript checking and temporary JavaScript emission. Docker construction is delegated to the Node 24 CI job because Docker is not installed locally. Re-run checks appropriate to later application changes.
 
-- 字典：`frontend/src/lib/i18n/dict.ts`（`zh` 为唯一事实源，`en` 按 `keyof typeof zh` 类型强约束，漏译即编译错误）。
-- 上下文：`frontend/src/lib/i18n/LanguageContext.tsx`（`LanguageProvider` + `useI18n()`，返回 `{ lang, setLang, t }`）。
-- 语言存储：独立 cookie `nb-lang`（`"zh" | "en"`），SSR 在 `layout.tsx` 读 cookie 传 `initialLang`，客户端 `setLang` 写 cookie，切换即时生效。
-- 切换器：设置窗口「语言」标签页（`Settings.tsx`，`tab === "lang"`）。
-- 窗口标题：`WinDef` 加 `titleKey?: DictKey`，静态标题走 `t(titleKey)`，动态标题（如 PAPER 运行中改名）仍用 `title` 字符串。
-- 行情名称：`syms.ts` 的 `Sym` 加 `nameEn`，`symName(id, lang, fallback)` 按语言取名。
+## Quick links
 
-**前端翻译状态**：全部 UI 文案已双语化（桌面图标/窗口标题/右键菜单/开始菜单/任务栏/设置/文件夹视图/记事本/媒体播放器/终端/运行框/系统属性/我的电脑/监视器/邮件/Bazinga/行情窗口与告警，以及所有游戏与创意窗口——Mines、NES、RepairGame、ColaRush、Hotaru、ImgLab、LaserCard3D、Paper、便签、DeskTexts、Fs 等）。英文模式 SSR 0 中文字符；仅开发者可见的 hook 误用 throw 文案为英文。`notes.txt` 默认内容已换成原创占位（不再有歌词版权风险）。
-
-**后端错误消息 i18n**：`server/src/i18n.ts`（AsyncLocalStorage + 字典 + `LocalizedError`）+ `lang.middleware.ts`；`db`/`auth`/`articles`/`files`/`preferences`/`news`/`hotaru`/`lab` 全部错误走 `t(key)`。后台任务（视频/激光渲染、关停取消）在请求作用域外运行时只存 key，`describe()` 读回时用 `translateIfKey()` 按当前请求语言翻译。
-
-**行情播报（SSE）本地化**：`EventSource` 带不了 `x-lang` 头，服务端 `rotate()` 不再生成中文 `msg`，改发结构化字段 `dayPct` + `kind`；前端 `MarketAlerts.tsx` 用 `serverAlertMsg()` 按当前语言拼文案（`market.alertNow/intraday/h24`）。离线镜像引擎（`local-engine.ts`）继续自带 `msg`，二者同走一个 `AlertPayload` 契约。
-
-**新闻内容**：深潮源为中文，`Ledger.tsx` 的 `liveEditions()` 在英文模式过滤掉无 `headline` 且正文含汉字的条目；AI 编选稿自带中英双字段，前端按语言取 `headline/text`（en）或 `headlineZh/textZh/analysis`（zh）。
-
-**续译流程**：grep 文件中的中文字符 → 在 `dict.ts` 加键（zh+en）→ 组件内 `useI18n()` 后用 `t("key")` 替换硬编码字符串。注意模块作用域常量（如 `WIN_DEFS`）不能直接用 hook，用 `titleKey` 模式或把常量搬进组件。
-
-## 12. 仓库与部署（2026-09-17 起）
-
-**Git 仓库**：`git@github.com:Fridayevening/portfolio.git`（public），分支 `main`，MIT LICENSE。
-- 首次提交 `chore: initial commit`（154 文件），已确认 `.env`/`.venv`/`node_modules`/zip 均未入库。
-- `frontend/.env.example`、`server/.env.example` 是环境变量模板；`.env` 一律 gitignore。
-
-**部署清单（未开始，接手时按顺序）**：
-1. 托管 MongoDB（Atlas 免费层即可），设 `MONGODB_URI`。
-2. 服务器环境变量：`OWNER_TOKEN`、`NEXT_PUBLIC_API_URL`（前端构建时指向后端公网地址，否则生产走离线假数据模式）。
-3. 收紧 `server/src/main.ts` 的 `app.enableCors()` 到生产域名。
-4. 行情/新闻网络：服务器直连时把 `MARKET_PROXY_URL`/`NEWS_PROXY_URL` 留空；或配一个 egress 代理。
-5. hotaru：服务器跑 `cd server && npm run python:setup`，或打 Docker 镜像（当前无 Dockerfile）。
-6. `lab` 无 Blender 则保持休眠（有守卫，不影响其他功能）。
-7. **后端必须是常驻进程**（行情 SSE 是长连接，不能上 serverless）；心跳每 15s 一发，空闲不会被掐断。建议：前端 Vercel（`NEXT_PUBLIC_API_URL` 指向后端），后端 Render/Fly/VPS。
-
-**内容迁移（下一阶段主线）**：
-- 计划见 `MIGRATION-PLAN.md`：把 `coding-workspace/portfolio` 的 4 个 Work + 2 篇 Research 搬进 NewBoy（新增 Work/Research 桌面图标 + CaseWindow/ResearchWindow）。
-- 设计稿参考：`coding-workspace/work-case-preview.html`（独立 HTML mockup，展示一个 Work 案例的最终排版；不在本仓库内）。
-- **硬门槛**：Uniubi 数字（5,381 / 850K+ / 7,610）未在职业材料里找到证据、内容包 `needs-review`，Phase 0 必须先经 Yanfei 确认；`draft`/`needs-review` 内容不得进网站。
+- Shared agent rules: `AGENTS.md`
+- Multi-AI operating manual: `docs/MULTI-AI-WORKFLOW.md`
+- Active ownership: `TASKS.md`
+- Stable architecture: `docs/ARCHITECTURE.md`
+- Architecture decisions: `docs/decisions/`
+- Frontend-specific rules: `frontend/AGENTS.md`
+- Portfolio migration proposal: `MIGRATION-PLAN.md`
