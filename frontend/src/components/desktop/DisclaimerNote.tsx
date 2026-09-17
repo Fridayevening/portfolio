@@ -1,6 +1,7 @@
 "use client";
 
 import { useDesktop } from "./context";
+import { useI18n } from "../../lib/i18n/LanguageContext";
 
 const PAPER = "#f4f1e4";
 const FRAME = "#b9b19a";
@@ -10,6 +11,7 @@ const SIG = "#86806c";
 
 export default function DisclaimerNote() {
   const api = useDesktop();
+  const { t } = useI18n();
   return (
     <div
       className="absolute left-1/2 top-[14px] z-[12] w-[216px] select-none px-[10px] pt-[9px] pb-[8px] text-[10.8px] leading-[1.45]"
@@ -28,18 +30,18 @@ export default function DisclaimerNote() {
         style={{ boxShadow: "0 1px 2px rgba(0,0,0,.18)" }}
       />
       <p className="m-0 mb-[5px]">
-        <b style={{ color: TITLE }}>A NOTE ABOUT ALL THIS</b>
+        <b style={{ color: TITLE }}>{t("disclaimer.title")}</b>
       </p>
-      <p className="m-0 mb-[5px]">Parody project. No shareholders, no KPIs. Every number here is made up. An all-purpose toolbox that solves none of your problems.</p>
-      <p className="m-0 mb-[5px]">Every tool may break, but that&apos;s a feature, not a bug.</p>
-      <p className="m-0 mb-[5px]">If something goes wrong, stay patient with the screen, or gently slap both sides of the case.</p>
+      <p className="m-0 mb-[5px]">{t("disclaimer.scope")}</p>
+      <p className="m-0 mb-[5px]">{t("disclaimer.tools")}</p>
+      <p className="m-0 mb-[5px]">{t("disclaimer.hint")}</p>
       <button
         type="button"
         className="m-0 block w-full cursor-pointer text-left italic"
         style={{ color: SIG }}
         onClick={() => api.open("readme")}
       >
-        Click for the longer version.
+        {t("disclaimer.more")}
       </button>
     </div>
   );

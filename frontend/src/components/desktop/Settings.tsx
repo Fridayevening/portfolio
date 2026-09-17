@@ -89,6 +89,8 @@ const HIDEABLE_APPS: [string, DictKey][] = [
   ["mycomputer", "app.myComputer"],
   ["tools", "app.tools"],
   ["lab", "app.lab"],
+  ["work", "portfolio.work.title"],
+  ["research", "portfolio.research.title"],
   ["notes", "app.notes.txt"],
   ["readme", "app.readme.txt"],
   ["media", "app.media"],

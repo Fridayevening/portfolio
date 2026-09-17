@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, type ReactNode } from "react";
+import type { Lang } from "../../lib/i18n/dict";
 
 /**
  * Window registered at runtime, outside the static WIN_DEFS table — opened by programs
@@ -10,6 +11,7 @@ import { createContext, useContext, type ReactNode } from "react";
 export type DynamicWindowDef = {
   id: string;
   title: string;
+  titleByLang?: Record<Lang, string>;
   icon: ReactNode;
   w: number;
   h: number;

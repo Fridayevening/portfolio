@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const jar = await cookies();
   const raw = jar.get("nb-lang")?.value;
-  const lang = isLang(raw) ? raw : "zh";
+  const lang = isLang(raw) ? raw : "en";
 
   return (
     <html lang={lang === "en" ? "en" : "zh-CN"} className="h-full antialiased">

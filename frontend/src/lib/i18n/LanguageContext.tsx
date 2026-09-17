@@ -13,9 +13,9 @@ type I18n = {
 const I18nContext = createContext<I18n | null>(null);
 
 function readCookieLang(): Lang {
-  if (typeof document === "undefined") return "zh";
+  if (typeof document === "undefined") return "en";
   const m = document.cookie.match(/(?:^|;\s*)nb-lang=([^;]+)/);
-  return m && isLang(m[1]) ? m[1] : "zh";
+  return m && isLang(m[1]) ? m[1] : "en";
 }
 
 export function LanguageProvider({

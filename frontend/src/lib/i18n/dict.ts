@@ -40,6 +40,14 @@ export const zh = {
   "app.mines": "扫雷",
   "app.nes": "红白机 - FAMICOM.EXE",
   "app.ownerLock": "主人之锁 - LOCK.EXE",
+  "portfolio.work.title": "作品",
+  "portfolio.research.title": "研究",
+  "portfolio.prototype": "打开 Figma 原型 ↗",
+  "disclaimer.title": "关于这个桌面",
+  "disclaimer.scope": "这是一个复古桌面作品集。部分桌面小组件用于趣味模拟；作品与研究中的经历和指标均经过证据审核。",
+  "disclaimer.tools": "工具偶尔会出故障——有时这是功能,不一定是 Bug。",
+  "disclaimer.hint": "如果出了问题,请对屏幕保持耐心,或者轻轻拍拍机箱两侧。",
+  "disclaimer.more": "点击查看完整说明。",
 
   // context menu / file menu
   "menu.file": "文件(F)",
@@ -867,6 +875,14 @@ export const en: Record<DictKey, string> = {
   "app.stickies.name": "Sticky Notes",
   "app.settings.name": "Settings",
   "app.ownerLock.name": "Owner Lock",
+  "portfolio.work.title": "Work",
+  "portfolio.research.title": "Research",
+  "portfolio.prototype": "Open Figma prototype ↗",
+  "disclaimer.title": "A NOTE ABOUT THIS DESKTOP",
+  "disclaimer.scope": "This is a retro-desktop portfolio. Some desktop widgets are playful simulations; the experience and metrics in Work and Research are evidence-reviewed.",
+  "disclaimer.tools": "Every tool may break, but sometimes that is a feature, not a bug.",
+  "disclaimer.hint": "If something goes wrong, stay patient with the screen, or gently tap both sides of the case.",
+  "disclaimer.more": "Click for the longer version.",
   "gamepad.test": "Gamepad Test",
   "gamepad.title": "Gamepad",
   "gamepad.line1": "No gamepad detected.",
@@ -1606,7 +1622,7 @@ export function currentT(key: DictKey): string {
 }
 
 export function currentLanguage(): Lang {
-  if (typeof document === "undefined") return "zh";
+  if (typeof document === "undefined") return "en";
   const match = document.cookie.match(/(?:^|;\s*)nb-lang=([^;]+)/);
-  return match && isLang(match[1]) ? match[1] : "zh";
+  return match && isLang(match[1]) ? match[1] : "en";
 }

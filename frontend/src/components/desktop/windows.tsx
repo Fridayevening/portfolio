@@ -118,7 +118,14 @@ export function FolderView({
             onPointerDown={() => it.onSelect?.()}
             onDoubleClick={it.onOpen}
             onContextMenu={it.onContextMenu}
-            onKeyDown={it.onKeyDown}
+            onKeyDown={(e) => {
+              it.onKeyDown?.(e);
+              if (e.defaultPrevented) return;
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                it.onOpen();
+              }
+            }}
           >
             {it.icon}
             <span className="w-full text-[11px] text-center leading-tight break-all group-hover:bg-navy group-hover:text-white group-hover:outline-1 group-hover:outline-dotted group-hover:outline-white">

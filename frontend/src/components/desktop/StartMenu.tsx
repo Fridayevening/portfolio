@@ -167,6 +167,20 @@ export default function StartMenu({ onClose }: { onClose: () => void }) {
       sub: [
         {
           kind: "item",
+          label: t("portfolio.work.title"),
+          icon: I(FolderIcon),
+          hideId: "work",
+          action: () => api.open("work"),
+        },
+        {
+          kind: "item",
+          label: t("portfolio.research.title"),
+          icon: I(FolderIcon),
+          hideId: "research",
+          action: () => api.open("research"),
+        },
+        {
+          kind: "item",
           label: "notes.txt",
           icon: I(TxtIcon),
           hideId: "notes",

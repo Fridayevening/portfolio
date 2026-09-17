@@ -1,6 +1,6 @@
 # Portfolio → Yanfeiportfolio 内容迁移计划（设计稿）
 
-> 状态：设计提案，**尚未实施**。目标：把 `coding-workspace/portfolio` 里已写好的
+> 状态：首发内容已实施并完成本地验证。目标：把 `coding-workspace/portfolio` 里已写好的
 > Work / Research 内容，无缝整合进 `coding-workspace/Yanfeiportfolio`（NewBoy 复古桌面）。
 > 本文只做方案，不动代码。
 
@@ -44,10 +44,12 @@
 
 ## 3. 关键约束（必须先确认，再谈方案）
 
-1. **证据门槛（最重要）**：`content/work/uniubi/README.md` 明确 Uniubi 内容包状态是
-   `needs-review`，且**网站当前 5,381 / 850K+ / 7,610 三个数字在职业材料里没找到证据**。
-   → 迁移必须遵守「内容包审核通过才同步网站」的规矩：`draft` / `needs-review` 的内容
-   **不得**直接进网站；已通过审核的才允许。
+1. **证据门槛（最重要）**：Yanfei 于 2026-09-17 确认完整 Uspace 产品组合（Ustar、
+   UstarAccess、UstarMobile、UstarCloud）累计服务 2,409 家企业组织、29K MAU；6 个主要版本、
+   10 人固定 Uniubi 团队及紧急迭代跨项目借调权限准确。旧网站的 5,381 / 850K+ / 7,610
+   已撤回。公开地域口径为 16 个国家；定价维度为设备数 × 用户数 × 功能模块。客户国家示例及
+   河南豫资、西子电梯名称可公开，但相关项目细节仍需准确。其余 `draft` / `needs-review` 声明
+   仍须审核通过后才能进入网站。
 2. **双语**：portfolio 的语言策略是「默认英文 + 中文切换」，与 NewBoy 的 i18n（`nb-lang`）
    一致。Uniubi 已有 `case-study.en.md` / `.zh.md` 双语草稿；其余内容目前**只有英文**，
    迁移后中文版需补齐（或先用英文占位）。
@@ -61,7 +63,7 @@
 
 ### 4.1 内容层：数据放在哪
 
-三个候选，推荐 **C（混合）**：
+三个候选中，首发采用 **A（静态前端）**，以降低上线复杂度并让审核后的内容随代码版本锁定；C 保留为未来在线编辑方案：
 
 | 方案 | 做法 | 优点 | 缺点 |
 |------|------|------|------|
@@ -69,9 +71,9 @@
 | B 全走 MongoDB | 内容作为 markdown 存进 articles/files，用 Paper 窗口渲染 | 复用现成编辑能力 | 结构化字段（指标/决策/产品卡片）会被拍平成 markdown，丢失结构 |
 | C 混合（推荐） | **结构化数据进后端**（新增 `portfolio` 模块或复用 articles），前端用**专用案例窗口**渲染；纯文本段落存 markdown | 结构完整 + 可编辑 + 双语天然（body/bodyZh 或 en/zh 两份） | 需要新建一个案例渲染窗口 + 数据模型 |
 
-结论：NewBoy 已有 articles/files（base36 id、secret 开关、owner 编辑），案例内容本质是
-「带结构的文章」。建议**复用 articles 模块的存储与权限，新增一个 `CaseStudy` 渲染窗口**，
-把 WorkStory 的分节结构映射成渲染层理解的数据（段落 + 指标网格 + 决策列表）。
+结论：首发将审核后的双语内容保存在 `portfolioContent.ts`，由专用作品窗口渲染。这避免为公开只读
+内容增加数据库、种子脚本和运行时故障面，并确保每次内容变更都经过代码审查。未来确有在线编辑需求时，
+再把相同类型结构迁入后端。
 
 ### 4.2 呈现层：映射到 NewBoy 桌面
 
@@ -105,33 +107,38 @@ NewBoy 桌面（现有）
 ## 5. 分阶段实施计划
 
 **Phase 0 — 事实确认（不写代码）**
-- [ ] Yanfei 确认 Uniubi 数字与产品范围（`evidence-map.md` 的 5 个待确认项）。
-- [ ] 确认 4 个案例 + 2 篇研究里，哪些是「已可公开」、哪些「待审」。
-- [ ] 确认语言命名（`EN / 中文`）与默认语言。
+- [x] Yanfei 确认 Uniubi 核心规模、产品范围、版本与团队事实；旧规模数字已撤回。
+- [x] 建立 4 个案例 + 2 篇研究的首轮公开声明审核清单：`docs/content-review/release-1.md`。
+- [x] 回查 UstarCloud、UstarMobile、UstarAccess 原始功能资料；首发不再使用未经统一口径支持的
+      `15 个后台模块` / `8 个小程序模块`，改为列举经文档支持的代表功能；版本只保留 6 个主要版本。
+- [x] 将 Career Workspace、Wiki、CV 与旧网站中的剩余冲突合并为一次性确认清单：
+      `docs/content-review/confirmation-request.md`。
+- [x] Yanfei 一次性确认剩余事实、个人贡献、原型与素材公开权限。
+- [x] 生成 4 个 Work + 2 个 Research 的中英双语批准稿：`docs/content-review/approved/`。
+- [x] 默认英文，提供完整中文版本，并沿用 `EN / 中文` 切换与语言记忆。
 
-**Phase 1 — 数据模型与后端**
-- [ ] 设计案例数据结构（含 en/zh 双语文案 + metrics + decisions 等）。
-- [ ] 后端：复用 articles 或新增 `portfolio` 模块；建库表/集合 + 种子数据导入脚本
-      （只导入 Phase 0 确认「可公开」的内容）。
-- [ ] 证据映射：每个案例附 `evidence-map` 的链接/来源说明（内部，不渲染）。
+**Phase 1 — 数据模型**
+- [x] 设计静态类型化案例结构（含 en/zh 双语文案、metrics 与 sections）。
+- [x] 只导入 Phase 0 确认可公开的内容；证据映射保留在仓库审核文档中，不渲染。
+- [ ] 后端内容编辑功能留作未来需求，不阻塞首发。
 
 **Phase 2 — 前端呈现**
-- [ ] 新增 `Work` / `Research` 两个桌面图标（进 `Desktop.tsx` 的图标表 + `WIN_DEFS`）。
-- [ ] 新建 `CaseWindow` 组件（指标网格 + 分节渲染，复用 Window95 窗框）。
-- [ ] 新建 `ResearchWindow` 组件（块流阅读视图）。
-- [ ] 接 `useI18n`：内容按 `lang` 切换。
+- [x] 新增 `Work` / `Research` 两个桌面图标（进 `Desktop.tsx` 的图标表 + `WIN_DEFS`）。
+- [x] 新建作品与研究阅读窗口（指标网格 + 分节/列表渲染，复用 Window95 窗框）。
+- [x] 接 `useI18n`：内容、打开中的标题栏与任务栏按 `lang` 即时切换。
 
 **Phase 3 — 双语补齐与打磨**
-- [ ] 补齐其余 3 个案例与 2 篇研究的中文版（或先用英文回退）。
+- [x] 补齐全部 4 个案例与 2 篇研究的中文版。
 - [ ] 移动端/800×600 视口下的可读性验证。
-- [ ] 隐私：默认 secret 开关是否对访客隐藏部分案例。
+- [x] Work / Research 接入现有 hiddenApps 访客隐藏机制。
 
 **Phase 4 — About Me（后续）**
 - [ ] 中英文简介、邮箱、LinkedIn、简历下载入口，放进「About」窗口。
 
 ## 6. 风险与开放问题
 
-1. **证据风险**：Uniubi 数字未验证。若 Phase 0 未确认，迁移时用保守表述或暂时跳过该案例。
+1. **证据风险**：Uniubi 核心规模已经确认，但 30% 硬件增长、12 条 GDPR 条款、`first to market`
+   等更强声明仍未通过审核，迁移时必须继续使用 evidence map。
 2. **内容格式差异**：portfolio 是结构化 TS，NewBoy 是 markdown 文章；需确定结构化字段
    （metrics/decisions）在后端的存储形式（JSON 字段 vs 拍平 markdown）。
 3. **工作流归属**：portfolio 的 `content/` 包是「内容审核」的单一事实源；迁移后建议保留
@@ -144,5 +151,5 @@ NewBoy 桌面（现有）
 
 1. 案例数据放**后端 MongoDB（可编辑）** 还是 **前端静态数据（快）**？→ 推荐后端。
 2. 呈现方式：**新 CaseWindow**（结构完整）还是**复用 Paper markdown**（简单）？→ 推荐新窗口。
-3. Uniubi 数字未确认前，该案例是否**先不迁移**，或**用保守表述占位**？
+3. Uniubi 案例使用完整 Uspace 产品组合叙事，还是只聚焦国际 Ustar 产品族？
 4. 默认语言：英文（沿用 portfolio 策略）还是中文？

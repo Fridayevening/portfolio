@@ -26,7 +26,7 @@ import PaperWindow, { PAPER_GEOM } from "./Paper";
 import Settings from "./Settings";
 import OwnerLock from "./OwnerLock";
 import { useI18n } from "../../lib/i18n/LanguageContext";
-import type { DictKey } from "../../lib/i18n/dict";
+import type { DictKey, Lang } from "../../lib/i18n/dict";
 import {
   openFsChild,
   pasteFs,
@@ -109,6 +109,7 @@ import { MeltDefs, MeltStage } from "./Melt";
 import ColaRush, { type RushPhase } from "./ColaRush";
 import SignalGlitch from "./SignalGlitch";
 import Screenshot from "./Screenshot";
+import { ResearchFolderWindow, WorkFolderWindow } from "./PortfolioWindows";
 
 const BOOT_ENABLED = false;
 const REPAIR_QUIET_MS = 10 * 60 * 1000; // how long repairing the TV mutes the interference
@@ -117,6 +118,8 @@ type WinDef = {
   title: string;
   /** When set, the title renders through i18n (static window titles only). */
   titleKey?: DictKey;
+  /** Runtime windows can provide literal titles for both supported languages. */
+  titleByLang?: Record<Lang, string>;
   icon: ReactNode;
   w: number;
   h: number;
@@ -177,6 +180,11 @@ function I(s: Parameters<typeof PixelIcon>[0]["sprite"], size = 14) {
   return <PixelIcon sprite={s} size={size} />;
 }
 
+function windowTitle(def: WinDef, lang: Lang, translate: (key: DictKey) => string): string {
+  if (def.titleKey) return translate(def.titleKey);
+  return def.titleByLang?.[lang] ?? def.title;
+}
+
 const WIN_DEFS: Record<string, WinDef> = {
   readme: {
     title: "README.TXT - 记事本",
@@ -230,6 +238,26 @@ const WIN_DEFS: Record<string, WinDef> = {
     x: 320,
     y: 200,
     render: () => <LabWindow />,
+  },
+  work: {
+    title: "Work",
+    titleKey: "portfolio.work.title",
+    icon: I(FolderIcon),
+    w: 500,
+    h: 360,
+    x: 190,
+    y: 110,
+    render: () => <WorkFolderWindow />,
+  },
+  research: {
+    title: "Research",
+    titleKey: "portfolio.research.title",
+    icon: I(FolderIcon),
+    w: 500,
+    h: 360,
+    x: 280,
+    y: 150,
+    render: () => <ResearchFolderWindow />,
   },
   bin: {
     title: "回收站",
@@ -444,7 +472,7 @@ export default function Desktop({ boot }: { boot?: BootPrefs }) {
 }
 
 function DesktopInner({ boot }: { boot?: BootPrefs }) {
-  const { t } = useI18n();
+  const { lang, t } = useI18n();
   // README is not open by default; the monitor likewise opens only on demand.
   const [wins, setWins] = useState<Record<string, WinState>>(() => ({
     media: { id: "media", x: WIN_DEFS.media.x, y: WIN_DEFS.media.y, w: WIN_DEFS.media.w, h: WIN_DEFS.media.h, z: 11, minimized: false, maximized: false, anchored: true },
@@ -966,6 +994,8 @@ function DesktopInner({ boot }: { boot?: BootPrefs }) {
     { id: "mycomputer", label: t("app.myComputer"), icon: <PixelIcon sprite={ComputerIcon} size={40} />, onOpen: () => open("mycomputer") },
     { id: "tools", label: t("app.tools"), icon: <PixelIcon sprite={FolderIcon} size={40} />, onOpen: () => open("tools") },
     { id: "lab", label: t("app.lab"), icon: <PixelIcon sprite={FolderIcon} size={40} />, onOpen: () => open("lab") },
+    { id: "work", label: t("portfolio.work.title"), icon: <PixelIcon sprite={FolderIcon} size={40} />, onOpen: () => open("work") },
+    { id: "research", label: t("portfolio.research.title"), icon: <PixelIcon sprite={FolderIcon} size={40} />, onOpen: () => open("research") },
     { id: "notes", label: "notes.txt", icon: <PixelIcon sprite={TxtIcon} size={40} />, onOpen: () => open("notes") },
     { id: "media", label: t("app.media"), icon: <PixelIcon sprite={MediaIcon} size={40} />, onOpen: () => open("media") },
     { id: "readme", label: "README.TXT", icon: <PixelIcon sprite={TxtIcon} size={40} />, onOpen: () => open("readme") },
@@ -1043,7 +1073,7 @@ function DesktopInner({ boot }: { boot?: BootPrefs }) {
     .filter((id) => wins[id])
     .map((id) => ({
       id,
-      title: defs[id].titleKey ? t(defs[id].titleKey) : defs[id].title,
+      title: windowTitle(defs[id], lang, t),
       icon: defs[id].icon,
       active: active === id,
     }));
@@ -1174,7 +1204,7 @@ function DesktopInner({ boot }: { boot?: BootPrefs }) {
               return (
                 <Window95
                   key={w.id}
-                  title={def.titleKey ? t(def.titleKey) : def.title}
+                  title={windowTitle(def, lang, t)}
                   icon={def.icon}
                   x={w.x}
                   y={w.y}
