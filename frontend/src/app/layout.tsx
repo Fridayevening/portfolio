@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { cookies } from "next/headers";
 import "@fontsource/vt323";
 import "@fontsource/ibm-plex-mono/400.css";
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
     "NewBoy — Toolsmith Services Terminal. Est. 2026. Best viewed at 800×600.",
 };
 
-export default async function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
   const jar = await cookies();
   const raw = jar.get("nb-lang")?.value;
   const lang = isLang(raw) ? raw : "en";
