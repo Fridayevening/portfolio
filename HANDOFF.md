@@ -8,7 +8,7 @@
 - Updated by: Codex
 - Base commit: `52193df`
 - Working tree at start: clean
-- Repository: `Fridayevening/portfolio` (public)
+- Repository: `Fridayevening/newboy` (public) — renamed from `Fridayevening/portfolio` on 2026-09-19
 - Default branch: `main`
 - Deployment: production preparation active; no external environment created
 
