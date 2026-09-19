@@ -1,14 +1,14 @@
-# Portfolio → Yanfeiportfolio 内容迁移计划（设计稿）
+# Portfolio → NewBoy 内容迁移计划（设计稿）
 
 > 状态：首发内容已实施并完成本地验证。目标：把 `coding-workspace/portfolio` 里已写好的
-> Work / Research 内容，无缝整合进 `coding-workspace/Yanfeiportfolio`（NewBoy 复古桌面）。
+> Work / Research 内容，无缝整合进 `coding-workspace/newboy`（NewBoy 复古桌面）。
 > 本文只做方案，不动代码。
 
 ## 1. 背景与目标
 
 - **源项目** `portfolio/`：Vite + React 的交互式作品集（Desktop → Work / Research / About Me）。
   内容已写好：**4 个 Work 案例 + 2 篇 Research 研究**，默认英文、可切中文。
-- **目标项目** `Yanfeiportfolio/`（NewBoy）：Next.js + NestJS + MongoDB 的复古桌面 OS 作品集。
+- **目标项目** `newboy/`（NewBoy）：Next.js + NestJS + MongoDB 的复古桌面 OS 作品集。
   目前是「工具箱/服务终端」形态，有文章、文件、新闻、行情、图像实验场、便签、文稿等，
   但**没有结构化的作品集案例内容**。
 - **目标**：把 portfolio 的 Work/Research 内容搬进 NewBoy 桌面，作为两个「文件夹」呈现，

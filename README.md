@@ -8,7 +8,7 @@
 ## 目录结构
 
 ```
-Yanfeiportfolio/
+newboy/
 ├── frontend/          # Next.js 前端（端口 3030）
 └── server/            # NestJS 后端 + python/ 脚本（端口 3031）
 ```

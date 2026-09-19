@@ -9,7 +9,7 @@ NewBoy is Yanfei's personal portfolio presented as an interactive Windows 95-sty
 ## Repository layout
 
 ```text
-Yanfeiportfolio/
+newboy/
 ├── frontend/              # Next.js application on port 3030
 ├── server/                # NestJS API on port 3031 with /v1 prefix
 │   └── python/            # Frozen copies of Hotaru and laser scripts
